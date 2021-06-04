@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using MyWPF.Converters;
 using MyWPF.Models;
 
 namespace MyWPF
@@ -19,15 +20,19 @@ namespace MyWPF
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
+	/// 
+	class FontWeightEqualConverter : ObjectsEqualConverter<System.Windows.FontWeight> { }
 	public partial class MainWindow : Window
 	{
+
+
 		public MainWindow()
 		{
 			List<Book> books = new List<Book>()
 			{
 			new Book("Рецепты печенек", null, new Publisher("Мир", "г. Москва"), new List<string>(){ "Иванов", "Петров" }, false),
-			new Book("CLR via C#", "Джеффри Рихтер", new Publisher("Мир", "г. Москва"), new List<string>(){ "Иванов", "Петров", "Сидоров", }, false),
-			new Book("Война и мир", "Л. Н. Толстой", new Publisher("Издание", "г. Краснодар"), null, true)
+			new Book("CLR via C#", "Джеффри Рихтер", new Publisher("", "г. Москва"), new List<string>(){ "Иванов", "Петров", "Сидоров", }, false),
+			new Book("Война и мир", "Л. Н. Толстой", new Publisher("Читай город", "г. Краснодар"), null, true)
 			};
 
 			MainWindowViewModel mVM = new MainWindowViewModel(books);

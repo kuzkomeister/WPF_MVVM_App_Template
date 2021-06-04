@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
+using System.Windows.Input;
+using MyWPF.Commands;
+using MyWPF.Converters;
 using MyWPF.Models;
 
 namespace MyWPF.ViewModels 
@@ -13,6 +16,7 @@ namespace MyWPF.ViewModels
 		private void OnPropertyChanged(string propertyName)
 			=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+
 		public Book Book { set; get; }
 
 		public BookViewModel(Book book)
@@ -20,9 +24,9 @@ namespace MyWPF.ViewModels
 			this.Book = book;
 		}
 
-		
 
-		public string Title
+        #region Секция свойств
+        public string Title
 		{
 			get => Book.Title;
 			set
@@ -71,6 +75,43 @@ namespace MyWPF.ViewModels
 				OnPropertyChanged("Status");
             }
         }
+
+		private string _newClient = "";
+		public string NewClientName
+        {
+			get => _newClient;
+			set
+            {
+				_newClient = value;
+				OnPropertyChanged("NewClientName");
+            }
+        }
+        #endregion
+
+        #region Секция команд и их вызываемых методов
+        private ICommand _changeStatusCommand;
+		public ICommand ChangeStatusCommand => _changeStatusCommand ?? (_changeStatusCommand = new RelayCommand(ChangeStatus));
+
+		private void ChangeStatus(object parameter)
+		{
+			if (Status)
+			{
+				if (NewClientName.Trim() != "")
+				{
+					Status = !Status;
+					Book.People.Add(new Client(NewClientName));
+					OnPropertyChanged("People");
+				}
+			}
+            else
+            {
+				Status = !Status;
+            }
+			NewClientName = "";
+		}
+        #endregion
+
+
 
 		public Client ClientWithBook
         {

@@ -1,5 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:c="clr-namespace:MyWPF"
+                    xmlns:t="clr-namespace:MyWPF.ViewModels"
                     xmlns:local="clr-namespace:MyWPF">
 
     <Style x:Key="TreeItemStackPanel" TargetType="StackPanel">
@@ -24,10 +26,27 @@
             <DataTrigger Binding="{Binding Path=Status}" Value="true">
                 <Setter TargetName="BookTitle" Property="Foreground" Value="Green"/>
             </DataTrigger>
+            <DataTrigger Binding="{Binding Path=Title}" Value="">
+                <Setter TargetName="BookTitle" Property="Text" Value="Без названия"/>
+            </DataTrigger>
         </HierarchicalDataTemplate.Triggers>
 
         <HierarchicalDataTemplate.ItemTemplate>
             <DataTemplate>
+                <DataTemplate.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontWeight">
+                            <Setter.Value>
+                                <MultiBinding Converter="{c:FontWeightEqualConverter EqualValue=Bold, NotEqualValue=Normal}">
+                                    <Binding />
+                                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type HierarchicalDataTemplate}, AncestorLevel=1}"
+                                             Path="ClientWithBook"/>
+                                </MultiBinding>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataTemplate.Resources>
+                
                 <StackPanel Style="{StaticResource TreeItemStackPanel}">
                     <Image Name="UserImage" Source="/UserIcon.png" Margin="-2,0,0,0"/>
                     <TextBlock Name="UserName" Text="{Binding Path=Name}" Foreground="Black"/>
@@ -48,7 +67,7 @@
     <DataTemplate x:Key="ListViewItemBook">
         <Border BorderBrush="Gray" BorderThickness="1" Margin="10">
             <StackPanel Margin="10">
-                <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
+                <TextBlock Name="txtTitle" Text="{Binding Title}" FontWeight="Bold"/>
                 <TextBlock Text="{Binding Author}"/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Издательство:"/>
@@ -60,6 +79,12 @@
                 </StackPanel>
             </StackPanel>
         </Border>
+
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{Binding Title}" Value="">
+                <Setter TargetName="txtTitle" Property="Text" Value="Без названия"/>
+            </DataTrigger>
+        </DataTemplate.Triggers>
     </DataTemplate>
     
 </ResourceDictionary>
