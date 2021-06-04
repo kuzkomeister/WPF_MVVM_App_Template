@@ -29,17 +29,19 @@
                 <DataTemplate>
                     <Border BorderBrush="Gray" BorderThickness="1" Margin="10">
                         <StackPanel Margin="10">
+                            <ToggleButton HorizontalAlignment="Right" Content="Изменить" Height="20" Margin="5" Command="{Binding ChangeEnableCommand}"/>
+
                             <TextBlock Text="Название:" Margin="0,10,0,0"/>
-                            <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding EnableBook}" />
 
                             <TextBlock Text="Автор:" Margin="0,10,0,0"/>
-                            <TextBox Text="{Binding Author, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Text="{Binding Author, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding EnableBook}"/>
 
                             <TextBlock Text="Издатель:" Margin="0,10,0,0"/>
-                            <TextBox Text="{Binding PublisherName, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Text="{Binding PublisherName, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding EnableBook}"/>
 
                             <TextBlock Text="Адрес издателя:" Margin="0,10,0,0"/>
-                            <TextBox Text="{Binding PublisherAddress, UpdateSourceTrigger=PropertyChanged}"/>
+                            <TextBox Text="{Binding PublisherAddress, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding EnableBook}"/>
 
                             <Button Name="bChangeStatus" Content="Вернуть" Margin="15" Width="100" Command="{Binding ChangeStatusCommand}"/>
 

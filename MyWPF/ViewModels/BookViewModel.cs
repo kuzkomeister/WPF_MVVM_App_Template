@@ -86,6 +86,17 @@ namespace MyWPF.ViewModels
 				OnPropertyChanged("NewClientName");
             }
         }
+
+		private bool _enableBook = false;
+		public bool EnableBook
+        {
+			get => _enableBook;
+            set
+            {
+				_enableBook = value;
+				OnPropertyChanged("EnableBook");
+            }
+        }
         #endregion
 
         #region Секция команд и их вызываемых методов
@@ -109,7 +120,15 @@ namespace MyWPF.ViewModels
             }
 			NewClientName = "";
 		}
-        #endregion
+
+		private ICommand _changeEnableCommand;
+		public ICommand ChangeEnableCommand => _changeEnableCommand ?? (_changeEnableCommand = new RelayCommand(ChangeEnable));
+
+		private void ChangeEnable(object parameter)
+		{
+			EnableBook = !EnableBook;
+		}
+		#endregion
 
 
 
@@ -117,6 +136,8 @@ namespace MyWPF.ViewModels
         {
 			get => Book.People.Count > 0 && !Book.Status ? Book.People[People.Count] : null;
         }
+
+
 
 		public ObservableCollection<Client> People
         {
