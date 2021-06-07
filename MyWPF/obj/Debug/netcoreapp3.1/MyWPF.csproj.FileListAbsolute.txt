@@ -19,4 +19,3 @@ D:\Users\KIKuznetsov\source\repos\MyWPF\MyWPF\obj\Debug\netcoreapp3.1\MyWPF.pdb
 D:\Users\KIKuznetsov\source\repos\MyWPF\MyWPF\obj\Debug\netcoreapp3.1\MyWPF.genruntimeconfig.cache
 D:\Users\KIKuznetsov\source\repos\MyWPF\MyWPF\obj\Debug\netcoreapp3.1\App.baml
 D:\Users\KIKuznetsov\source\repos\MyWPF\MyWPF\obj\Debug\netcoreapp3.1\DictionaryStyles.baml
-D:\Users\KIKuznetsov\source\repos\MyWPF\MyWPF\obj\Debug\netcoreapp3.1\GeneratedInternalTypeHelper.g.cs

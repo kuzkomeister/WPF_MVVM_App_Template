@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MyWPF.Converters;
 using MyWPF.Models;
+using MyWPF.ViewModels;
 
 namespace MyWPF
 {
@@ -30,8 +31,8 @@ namespace MyWPF
 		{
 			List<Book> books = new List<Book>()
 			{
-			new Book("Рецепты печенек", null, new Publisher("Мир", "г. Москва"), new List<string>(){ "Иванов", "Петров" }, false),
-			new Book("CLR via C#", "Джеффри Рихтер", new Publisher("", "г. Москва"), new List<string>(){ "Иванов", "Петров", "Сидоров", }, false),
+			new Book("Рецепты печенек", null, new Publisher("Мир", "г. Москва"), new List<Client>(){ new Client("Иванов", 1), new Client("Петров", 2) }, false),
+			new Book("CLR via C#", "Джеффри Рихтер", new Publisher("", "г. Москва"), new List<Client>(){ new Client("Иванов", 1), new Client("Петров", 2), new Client("Сидоров", 3) }, false),
 			new Book("Война и мир", "Л. Н. Толстой", new Publisher("Читай город", "г. Краснодар"), null, true)
 			};
 
@@ -40,5 +41,7 @@ namespace MyWPF
 
 			InitializeComponent();
 		}
-	}
+
+		
+    }
 }

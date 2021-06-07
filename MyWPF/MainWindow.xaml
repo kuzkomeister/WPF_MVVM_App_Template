@@ -9,22 +9,26 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition Width="267*"/>
-            <ColumnDefinition Width="186*"/>
-            <ColumnDefinition Width="80*"/>
-            <ColumnDefinition Width="267*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
 
-        <ScrollViewer Grid.ColumnSpan="2">
+        <ScrollViewer Grid.Column="0">
             <StackPanel>
-                <Button Content="Добавить книгу" HorizontalAlignment="Center" Command="{Binding CreateEmptyBook}"/>
-                <ListView ItemsSource="{Binding BooksList}" Grid.Column="0" ItemTemplate="{StaticResource ListViewItemBook}" IsSynchronizedWithCurrentItem="True" Margin="0,10,0,0"/>
+                <Border BorderBrush="Gray">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                        <TextBox Width="175" Text="{Binding SearchTitle, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Поиск"/>
+                    </StackPanel>
+                </Border>
+                <Button Content="Добавить книгу" HorizontalAlignment="Center" Command="{Binding CreateEmptyBook}" Margin="5"/>
+                <ListView ItemsSource="{Binding BooksList}" ItemTemplate="{StaticResource ListViewItemBook}" IsSynchronizedWithCurrentItem="True" Margin="0,10,0,0" SelectedItem="{Binding SelectedBookViewModel, Mode=TwoWay}"/>
             </StackPanel>
         </ScrollViewer>
 
-        <ContentControl Grid.Column="2" Content="{Binding BooksList}" Grid.ColumnSpan="2">
+        <ContentControl Grid.Column="1" Content="{Binding SelectedBookViewModel}">
             <ContentControl.ContentTemplate>
                 <DataTemplate>
                     <Border BorderBrush="Gray" BorderThickness="1" Margin="10">
@@ -45,8 +49,11 @@
 
                             <Button Name="bChangeStatus" Content="Вернуть" Margin="15" Width="100" Command="{Binding ChangeStatusCommand}"/>
 
-                            <TextBlock Name="txtNewClient1" Text="Фамилия нового владельца:" Margin="0,10,0,0" Visibility="Hidden"/>
-                            <TextBox Name="txtNewClient2" Text="{Binding NewClientName, UpdateSourceTrigger=PropertyChanged}" Visibility="Hidden"/>
+                            <TextBlock Name="txtNewClient" Text="Фамилия нового владельца              ID" Margin="0,10,0,0" Visibility="Hidden"/>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox Name="tbNewClientName" Text="{Binding NewClientName, UpdateSourceTrigger=PropertyChanged}" Visibility="Hidden" Width="175"/>
+                                <TextBox Name="tbNewClientID" Text="{Binding NewClientID, UpdateSourceTrigger=PropertyChanged}" Visibility="Hidden" Margin="20,0,0,0" Width="25"/>
+                            </StackPanel>
 
                         </StackPanel>
                     </Border>
@@ -54,8 +61,9 @@
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding Status}" Value="true">
                             <Setter TargetName="bChangeStatus" Property="Content" Value="Взять"/>
-                            <Setter TargetName="txtNewClient1" Property="Visibility" Value="Visible"/>
-                            <Setter TargetName="txtNewClient2" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="txtNewClient" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="tbNewClientName" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="tbNewClientID" Property="Visibility" Value="Visible"/>
                         </DataTrigger>
 
                     </DataTemplate.Triggers>
@@ -64,9 +72,18 @@
             </ContentControl.ContentTemplate>
         </ContentControl>
 
-        <TreeView Grid.Column="4">
-            <TreeViewItem Header="Список книг и их предыдущих владельцев" ItemsSource="{Binding BooksList}" ItemTemplate="{StaticResource TreeItemBook}"/>
+
+        <TreeView Grid.Column="2" >
+            <TreeViewItem Header="Список книг и их предыдущих владельцев" ItemsSource="{Binding BooksList}" ItemTemplate="{StaticResource TreeItemBook}" IsExpanded="True">
+                <TreeViewItem.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="IsExpanded" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                    </Style>
+                </TreeViewItem.ItemContainerStyle>
+            </TreeViewItem>
         </TreeView>
+        
+        
 
 
     </Grid>

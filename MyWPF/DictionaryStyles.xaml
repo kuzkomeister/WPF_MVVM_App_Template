@@ -4,19 +4,14 @@
                     xmlns:t="clr-namespace:MyWPF.ViewModels"
                     xmlns:local="clr-namespace:MyWPF">
 
+    <!-- Стиль Панелек в дереве -->
     <Style x:Key="TreeItemStackPanel" TargetType="StackPanel">
         <Setter Property="Height" Value="20"/>
         <Setter Property="Orientation" Value="Horizontal"/>
     </Style>
 
-    <Style TargetType="TreeViewItem">
-        <Setter Property="IsExpanded" Value="True"/>
-    </Style>
-
-        
-    <HierarchicalDataTemplate x:Key="TreeItemBook" ItemsSource="{Binding Path=People}">
-
-        
+    <!-- Шаблон для отображения дерева книг и их владельцев -->
+    <HierarchicalDataTemplate x:Key="TreeItemBook" ItemsSource="{Binding Path=People}" >
         <StackPanel Style="{StaticResource TreeItemStackPanel}">
             <Image Source="/BookIcon.png" Margin="-2,0,0,0"/>
             <TextBlock Name="BookTitle" Text="{Binding Path=Title}" Foreground="Red" FontWeight="Bold"/>
@@ -33,38 +28,36 @@
 
         <HierarchicalDataTemplate.ItemTemplate>
             <DataTemplate>
-                <DataTemplate.Resources>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="FontWeight">
-                            <Setter.Value>
-                                <MultiBinding Converter="{c:FontWeightEqualConverter EqualValue=Bold, NotEqualValue=Normal}">
-                                    <Binding />
-                                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type HierarchicalDataTemplate}, AncestorLevel=1}"
-                                             Path="ClientWithBook"/>
-                                </MultiBinding>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </DataTemplate.Resources>
-                
+
                 <StackPanel Style="{StaticResource TreeItemStackPanel}">
                     <Image Name="UserImage" Source="/UserIcon.png" Margin="-2,0,0,0"/>
                     <TextBlock Name="UserName" Text="{Binding Path=Name}" Foreground="Black"/>
+                    <TextBlock Name="UserDefis" Text=" - " Foreground="Black"/>
+                    <TextBlock Name="UserID" Text="{Binding Path=ID}" Foreground="Black"/>
                 </StackPanel>
 
                 <DataTemplate.Triggers>
                     <DataTrigger Binding="{Binding Path=Name}" Value="Предыдущих владельцев нет">
                         <Setter TargetName="UserImage" Property="Visibility" Value="Hidden"/>
+                        <Setter TargetName="UserDefis" Property="Visibility" Value="Hidden"/>
+                        <Setter TargetName="UserID" Property="Visibility" Value="Hidden"/>
                         <Setter TargetName="UserName" Property="Margin" Value="-20,0,0,0"/>
                     </DataTrigger>
-                    
-                    
+
+                    <DataTrigger Binding="{Binding Status}" Value="True">
+                        <Setter TargetName="UserName" Property="Foreground" Value="Red"/>
+                        <Setter TargetName="UserDefis" Property="Foreground" Value="Red"/>
+                        <Setter TargetName="UserID" Property="Foreground" Value="Red"/>
+                    </DataTrigger>
                 </DataTemplate.Triggers>
             </DataTemplate>
         </HierarchicalDataTemplate.ItemTemplate>
     </HierarchicalDataTemplate>
 
-    <DataTemplate x:Key="ListViewItemBook">
+    
+    
+    <!-- Шаблон для отображения списка книг с подробной информацией -->
+    <DataTemplate x:Key="ListViewItemBook" >
         <Border BorderBrush="Gray" BorderThickness="1" Margin="10">
             <StackPanel Margin="10">
                 <TextBlock Name="txtTitle" Text="{Binding Title}" FontWeight="Bold"/>

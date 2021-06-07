@@ -6,13 +6,24 @@ namespace MyWPF.Models
 {
     class Publisher
     {
-        public string Name { set; get; }
-        public string Address { set; get; }
+        #region Секция полей
+        public string Name { set; get; }        // Название издания
+        public string Address { set; get; }     // Адрес издания
 
-        public Publisher(string name, string address)
+        #endregion
+
+        #region Секция конструкторов
+
+        public Publisher(string name)
         {
-            this.Name = name;
-            this.Address = address;
+            Name = name;
         }
+
+        public Publisher(string name, string address) : this(name)
+        {
+            Address = address;
+        }
+        #endregion
+
     }
 }
