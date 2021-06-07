@@ -31,9 +31,21 @@ namespace MyWPF
 		{
 			List<Book> books = new List<Book>()
 			{
-			new Book("Рецепты печенек", null, new Publisher("Мир", "г. Москва"), new List<Client>(){ new Client("Иванов", 1), new Client("Петров", 2) }, false),
-			new Book("CLR via C#", "Джеффри Рихтер", new Publisher("", "г. Москва"), new List<Client>(){ new Client("Иванов", 1), new Client("Петров", 2), new Client("Сидоров", 3) }, false),
-			new Book("Война и мир", "Л. Н. Толстой", new Publisher("Читай город", "г. Краснодар"), null, true)
+			new Book("Рецепты печенек", null, new Publisher("Мир", "г. Москва"), 
+					new List<Client>()
+					{ 
+						new Client("Иванов", 1), 
+						new Client("Петров", 2) 
+					}, false),
+			new Book("CLR via C#", "Джеффри Рихтер", new Publisher("", "г. Москва"), 
+					new List<Client>()
+					{ 
+						new Client("Иванов", 1), 
+						new Client("Петров", 2), 
+						new Client("Сидоров", 3) 
+					}, false),
+			new Book("Война и мир", "Л. Н. Толстой", new Publisher("Читай город", "г. Краснодар"), true),
+			new Book("Война и война", "Н. Л. Худой", new Publisher("Неизведанное"), true)
 			};
 
 			MainWindowViewModel mVM = new MainWindowViewModel(books);
