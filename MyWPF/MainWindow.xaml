@@ -15,19 +15,25 @@
         </Grid.ColumnDefinitions>
 
 
-        <ScrollViewer Grid.Column="0">
-            <StackPanel>
-                <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-                        <TextBox Width="175" Text="{Binding SearchTitle, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock Text="Поиск"/>
+
+        <StackPanel Grid.Column="0">
+            <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                    <TextBox Width="175" Text="{Binding SearchTitle, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Text="Поиск"/>
+                </StackPanel>
+            </Border>
+            <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                <ScrollViewer MaxHeight="600">
+                    <StackPanel>
+                        <Button Content="Добавить новую книгу" HorizontalAlignment="Center" Command="{Binding CreateEmptyBook}" Margin="5"/>
+                        <ListView ItemsSource="{Binding BooksList}" ItemTemplate="{StaticResource ListViewItemBook}" IsSynchronizedWithCurrentItem="True" Margin="0,10,0,0" 
+                          SelectedItem="{Binding SelectedBookViewModel, Mode=TwoWay}"/>
                     </StackPanel>
-                </Border>
-                <Button Content="Добавить новую книгу" HorizontalAlignment="Center" Command="{Binding CreateEmptyBook}" Margin="5"/>
-                <ListView ItemsSource="{Binding BooksList}" ItemTemplate="{StaticResource ListViewItemBook}" IsSynchronizedWithCurrentItem="True" Margin="0,10,0,0" 
-                          SelectedItem="{Binding SelectedBookViewModel, Mode=TwoWay}" SelectionChanged="ListView_SelectionChanged"/>
-            </StackPanel>
-        </ScrollViewer>
+                </ScrollViewer>
+            </Border>
+        </StackPanel>
+
 
         <ContentControl Grid.Column="1" Content="{Binding CloneSelectedBookViewModel}">
             <ContentControl.ContentTemplate>
@@ -49,21 +55,24 @@
 
                                     <TextBlock Text="Адрес издателя:" Margin="0,10,0,0"/>
                                     <TextBox Text="{Binding PublisherAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsEnable}"/>
+
+                                    <TextBlock Text="Количество:" Margin="0,10,0,0"/>
+                                    <TextBox Text="{Binding Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsEnable}"/>
                                 </StackPanel>
                             </Border>
                             
                             <!-- Секция с кнопками для закрепления/удаления изменений -->
                             <StackPanel Margin="10">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Button Name="bEdit" Content="Изменить" Height="20" Width="75" Margin="5" 
+                                    <Button Name="bEdit" Content="Изменить" Height="20" Width="100" Margin="5" 
                                             Command="{Binding EditBookCommand}"/>
-                                    <Button Name="bSave" Content="Сохранить" Height="20" Width="75" Margin="5" Visibility="Hidden" 
+                                    <Button Name="bSave" Content="Сохранить" Height="20" Width="100" Margin="5" Visibility="Hidden" 
                                             Command="{Binding Path=DataContext.SaveBookChanges, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
                                 </StackPanel>
                             </StackPanel>
                             
                             <!-- Секция отдачи/возврата книг -->
-                            <StackPanel>
+                            <StackPanel Margin="0,10,0,0">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <Button Name="bGiveBook" Content="Выдать" Margin="5" Width="100" 
                                             Command="{Binding Path=DataContext.SelectedBookViewModel.GiveBookCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
@@ -72,33 +81,52 @@
                                 </StackPanel>
                             </StackPanel>
 
-                            
-                            <StackPanel Name="ClientsPanel">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                                    <TextBox Width="150" Text="{Binding Path=DataContext.SearchFamName, RelativeSource={RelativeSource AncestorType={x:Type Window}}, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <TextBlock Text="Поиск"/>
+                            <Border Name="ClientsPanel" BorderBrush="Gray" BorderThickness="1" Margin="5">
+                                <StackPanel>
+                                    <Border>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
+                                            <TextBox Width="125" Text="{Binding Path=DataContext.SearchFamName, RelativeSource={RelativeSource AncestorType={x:Type Window}}, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <TextBlock Text="Поиск"/>
+                                        </StackPanel>
+                                    </Border>
+
+                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                                        <ScrollViewer MaxHeight="350">
+                                            <StackPanel>
+                                                <ListView ItemsSource="{Binding Path=DataContext.ClientsList, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
+                                                          SelectedItem="{Binding Path=DataContext.SelectedBookViewModel.SelectedClientVM, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Mode=TwoWay}">
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                                                                <StackPanel Orientation="Vertical" Margin="10">
+                                                                    <StackPanel.Resources>
+                                                                        <Style TargetType="StackPanel">
+                                                                            <Setter Property="Orientation" Value="Horizontal"/>
+                                                                        </Style>
+                                                                    </StackPanel.Resources>
+                                                                    <StackPanel>
+                                                                        <TextBlock Text="Идентификатор:" FontWeight="Bold"/>
+                                                                        <TextBlock Text="{Binding ID}" Margin="5,0"/>
+                                                                    </StackPanel>
+                                                                    <StackPanel>
+                                                                        <TextBlock Text="Фамилия:" FontWeight="Bold"/>
+                                                                        <TextBlock Text="{Binding Fam}" Margin="5,0"/>
+                                                                    </StackPanel>
+                                                                    <StackPanel>
+                                                                        <TextBlock Text="Имя:" FontWeight="Bold"/>
+                                                                        <TextBlock Text="{Binding Name}" Margin="5,0"/>
+                                                                    </StackPanel>
+                                                                </StackPanel>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+                                                </ListView>
+                                            </StackPanel>
+                                        </ScrollViewer>
+                                    </Border>
                                 </StackPanel>
-                                <ScrollViewer CanContentScroll="True">
-                                    <StackPanel>
-                                        <ListView ItemsSource="{Binding Path=DataContext.ClientsList, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
-                                          SelectedItem="{Binding Path=DataContext.SelectedBookViewModel.SelectedClientVM, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Mode=TwoWay}">
-                                            <ListView.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <TextBlock Text="{Binding ID}"/>
-                                                            <TextBlock Text="-"/>
-                                                            <TextBlock Text="{Binding Fam}" />
-                                                            <TextBlock Text="{Binding Name}" Margin="5,0"/>
-                                                        </StackPanel>
-                                                    </Border>
-                                                </DataTemplate>
-                                            </ListView.ItemTemplate>
-                                        </ListView>
-                                    </StackPanel>
-                                </ScrollViewer>
-                            </StackPanel>
-                            
+                            </Border>
+
                         </StackPanel>
                     </Border>
 

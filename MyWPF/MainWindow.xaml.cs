@@ -42,7 +42,13 @@ namespace MyWPF
 				new Client("Иван", "Иванов", 1),
 				new Client("Петр", "Петров", 2),
 				new Client("Олег", "Олегов", 3),
-				new Client("Василий", "Васильев", 4)
+				new Client("Василий", "Васильев", 4),
+				new Client("Кирилл", "Кириллов", 5),
+				new Client("Влад", "Владов", 6),
+				new Client("Артем", "Артемов", 7),
+				new Client("Никита", "Никитов", 8),
+				new Client("Егор", "Егоров", 9),
+				new Client("Артем", "Егоров", 10)
 			};
 
 			books[0].People.Add((clients[0], false));
@@ -67,10 +73,5 @@ namespace MyWPF
 			InitializeComponent();
 		}
 
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-			var listView = sender as ListView;
-			listView.ScrollIntoView(listView.SelectedItem);
-        }
     }
 }

@@ -87,8 +87,8 @@ namespace MyWPF
             set
             {
 				_searchFamName = value;
-				SelectedBookViewModel.SelectedClientVM = ClientsList.FirstOrDefault(s => (s.Fam + " " + s.Name).ToLower().StartsWith(SearchFamName.ToLower()));
 				OnPropertyChanged("SearchFamName");
+				SelectedBookViewModel.SelectedClientVM = ClientsList.FirstOrDefault(client => (client.Fam + " " + client.Name).ToLower().StartsWith(SearchFamName.ToLower()));
 			}
         }
         #endregion

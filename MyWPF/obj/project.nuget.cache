@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "pktWuSkECvfWQnypWDoWfnryJTPuzEbPt9HuasLPnBqGiEg4O7rSzd/c1PI/NIlP86WiMUJE3AfWuI4kxxTtHw==",
+  "dgSpecHash": "xGOgaciVwA0IqgUuoL7F3Pt5APS3xCG1KvWp/8Ny2lqORY/6WBo8/+xhjgaMDfrCNS2WTJebyfM//yxjuJNp1w==",
   "success": true,
-  "projectFilePath": "D:\\Users\\KIKuznetsov\\source\\repos\\MyWPF\\MyWPF\\MyWPF.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "C:\\Users\\User\\source\\repos\\WPFTestMVVM\\MyWPF\\MyWPF.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\User\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.13\\microsoft.netcore.app.host.win-x64.3.1.13.nupkg.sha512"
+  ],
   "logs": []
 }

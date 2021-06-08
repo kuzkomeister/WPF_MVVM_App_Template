@@ -197,6 +197,7 @@ namespace MyWPF.ViewModels
 			Author = newBook.Author;
 			PublisherName = newBook.PublisherName;
 			PublisherAddress = newBook.PublisherAddress;
+			Count = newBook.Count;
         }
     }
 }

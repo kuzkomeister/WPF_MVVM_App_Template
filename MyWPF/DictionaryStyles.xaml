@@ -31,11 +31,11 @@
 
                 <StackPanel Style="{StaticResource TreeItemStackPanel}">
                     <Image Name="UserImage" Source="/UserIcon.png" Margin="-2,0,0,0"/>
-                    <TextBlock Name="UserFam" Text="{Binding Path=Fam}" Foreground="Black"/>
+                    <TextBlock Name="UserFam" Text="{Binding Path=Fam}" Foreground="Green"/>
                     <TextBlock Text=" "/>
-                    <TextBlock Name="UserName" Text="{Binding Path=Name}" Foreground="Black"/>
-                    <TextBlock Name="UserDefis" Text=" - " Foreground="Black"/>
-                    <TextBlock Name="UserID" Text="{Binding Path=ID}" Foreground="Black"/>
+                    <TextBlock Name="UserName" Text="{Binding Path=Name}" Foreground="Green"/>
+                    <TextBlock Name="UserDefis" Text=" - " Foreground="Green"/>
+                    <TextBlock Name="UserID" Text="{Binding Path=ID}" Foreground="Green"/>
                 </StackPanel>
 
                 <DataTemplate.Triggers>
