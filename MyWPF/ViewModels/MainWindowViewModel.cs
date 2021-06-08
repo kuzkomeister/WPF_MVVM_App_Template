@@ -10,6 +10,7 @@ using System.Windows.Input;
 using MyWPF.Commands;
 using MyWPF.ViewModels;
 using System.Windows.Controls;
+using MyWPF.Models;
 
 namespace MyWPF
 {
@@ -20,6 +21,7 @@ namespace MyWPF
         #region Секция свойств
 		// Список книг
         public ObservableCollection<BookViewModel> BooksList { set; get; }
+		public ObservableCollection<ClientViewModel> ClientsList { set; get; }
 
 		// Текущая выбранная книга
 		private BookViewModel _selectedBookViewModel;
@@ -32,19 +34,36 @@ namespace MyWPF
 				{
 					if (_selectedBookViewModel != null)
 					{
-						_selectedBookViewModel.IsSelected = false;
-						_selectedBookViewModel = value;
-						_selectedBookViewModel.IsSelected = true;
+						if (!CloneSelectedBookViewModel.IsEnable)
+						{
+							_selectedBookViewModel.IsSelected = false;
+							_selectedBookViewModel = value;
+							_selectedBookViewModel.IsSelected = true;
+							CloneSelectedBookViewModel = (BookViewModel)_selectedBookViewModel.Clone();
+						}
 					}
 					else
 					{
 						_selectedBookViewModel = value;
 						_selectedBookViewModel.IsSelected = true;
+						CloneSelectedBookViewModel = (BookViewModel)_selectedBookViewModel.Clone();
 					}
 					OnPropertyChanged("SelectedBookViewModel");
 				}
 			}
 		}
+
+		// Клон текущей выбранной книги (для внесения изменений)
+		private BookViewModel _cloneSelectedBookViewModel;
+		public BookViewModel CloneSelectedBookViewModel
+        {
+			get => _cloneSelectedBookViewModel;
+            set
+            {
+				_cloneSelectedBookViewModel = value;
+				OnPropertyChanged("CloneSelectedBookViewModel");
+            }
+        }
 
 		// Строка для поиска книги по названию
 		private string _searchTitle;
@@ -60,6 +79,18 @@ namespace MyWPF
 			
         }
 
+		// Строка для поиска клиента по фамилии
+		private string _searchFamName;
+		public string SearchFamName
+        {
+			get => _searchFamName;
+            set
+            {
+				_searchFamName = value;
+				SelectedBookViewModel.SelectedClientVM = ClientsList.FirstOrDefault(s => (s.Fam + " " + s.Name).ToLower().StartsWith(SearchFamName.ToLower()));
+				OnPropertyChanged("SearchFamName");
+			}
+        }
         #endregion
 
         #region Секция команд и их вызываемых методов
@@ -69,20 +100,42 @@ namespace MyWPF
 
 		private void AddEmptyBook(object parameter)
 		{
-			BooksList.Add(new BookViewModel(new Book("", true)));
+			BooksList.Add(new BookViewModel(new Book("", 1)));
 		}
+
+		// Сохранить изменения книги
+		private ICommand _saveBookChanges;
+		public ICommand SaveBookChanges => _saveBookChanges ?? (_saveBookChanges = new RelayCommand(SaveChanges));
+
+		private void SaveChanges(object parameter)
+        {
+			SelectedBookViewModel.ChangeData(CloneSelectedBookViewModel);
+			CloneSelectedBookViewModel.IsEnable = false;
+        }
+
+		// Отменить изменения
+		private ICommand _cancelBookChanges;
+		public ICommand CancelBookChanges => _cancelBookChanges ?? (_cancelBookChanges = new RelayCommand(CancelChanges));
+
+		private void CancelChanges(object parameter)
+        {
+			CloneSelectedBookViewModel.ChangeData(SelectedBookViewModel);
+			CloneSelectedBookViewModel.IsEnable = false;
+        }
         #endregion
 
         #region Секция конструкторов
-        public MainWindowViewModel(List<Book> books)
+        public MainWindowViewModel(List<Book> books, List<Client> clients)
 		{
 			BooksList = new ObservableCollection<BookViewModel>(books.Select(b => new BookViewModel(b)));
+			ClientsList = new ObservableCollection<ClientViewModel>(clients.Select(c => new ClientViewModel(c, false)));
 		}
 
 		public MainWindowViewModel()
         {
 			BooksList = new ObservableCollection<BookViewModel>();
-        }
+			ClientsList = new ObservableCollection<ClientViewModel>();
+		}
 
         #endregion
 

@@ -31,6 +31,8 @@
 
                 <StackPanel Style="{StaticResource TreeItemStackPanel}">
                     <Image Name="UserImage" Source="/UserIcon.png" Margin="-2,0,0,0"/>
+                    <TextBlock Name="UserFam" Text="{Binding Path=Fam}" Foreground="Black"/>
+                    <TextBlock Text=" "/>
                     <TextBlock Name="UserName" Text="{Binding Path=Name}" Foreground="Black"/>
                     <TextBlock Name="UserDefis" Text=" - " Foreground="Black"/>
                     <TextBlock Name="UserID" Text="{Binding Path=ID}" Foreground="Black"/>
@@ -40,12 +42,14 @@
                     <DataTrigger Binding="{Binding Path=Name}" Value="Предыдущих владельцев нет">
                         <Setter TargetName="UserImage" Property="Visibility" Value="Hidden"/>
                         <Setter TargetName="UserDefis" Property="Visibility" Value="Hidden"/>
+                        <Setter TargetName="UserFam" Property="Visibility" Value="Hidden"/>
                         <Setter TargetName="UserID" Property="Visibility" Value="Hidden"/>
                         <Setter TargetName="UserName" Property="Margin" Value="-20,0,0,0"/>
                     </DataTrigger>
 
                     <DataTrigger Binding="{Binding Status}" Value="True">
                         <Setter TargetName="UserName" Property="Foreground" Value="Red"/>
+                        <Setter TargetName="UserFam" Property="Foreground" Value="Red"/>
                         <Setter TargetName="UserDefis" Property="Foreground" Value="Red"/>
                         <Setter TargetName="UserID" Property="Foreground" Value="Red"/>
                     </DataTrigger>
@@ -69,6 +73,10 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Адрес:"/>
                     <TextBlock Text="{Binding PublisherAddress}" Margin="10,0"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Количество:"/>
+                    <TextBlock Text="{Binding Count}" Margin="10,0"/>
                 </StackPanel>
             </StackPanel>
         </Border>

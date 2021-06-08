@@ -31,29 +31,46 @@ namespace MyWPF
 		{
 			List<Book> books = new List<Book>()
 			{
-			new Book("Рецепты печенек", null, new Publisher("Мир", "г. Москва"), 
-					new List<Client>()
-					{ 
-						new Client("Иванов", 1), 
-						new Client("Петров", 2) 
-					}, false),
-			new Book("CLR via C#", "Джеффри Рихтер", new Publisher("", "г. Москва"), 
-					new List<Client>()
-					{ 
-						new Client("Иванов", 1), 
-						new Client("Петров", 2), 
-						new Client("Сидоров", 3) 
-					}, false),
-			new Book("Война и мир", "Л. Н. Толстой", new Publisher("Читай город", "г. Краснодар"), true),
-			new Book("Война и война", "Н. Л. Худой", new Publisher("Неизведанное"), true)
+			new Book("Рецепты печенек", null, new Publisher("Мир", "г. Москва"), 1),
+			new Book("CLR via C#", "Джеффри Рихтер", new Publisher("", "г. Москва"), 0),
+			new Book("Война и мир", "Л. Н. Толстой", new Publisher("Читай город", "г. Краснодар"), 1),
+			new Book("Война и война", "Н. Л. Худой", 1)
 			};
 
-			MainWindowViewModel mVM = new MainWindowViewModel(books);
+			List<Client> clients = new List<Client>()
+			{
+				new Client("Иван", "Иванов", 1),
+				new Client("Петр", "Петров", 2),
+				new Client("Олег", "Олегов", 3),
+				new Client("Василий", "Васильев", 4)
+			};
+
+			books[0].People.Add((clients[0], false));
+			books[0].People.Add((clients[1], true));
+
+			books[1].People.Add((clients[0], false));
+			books[1].People.Add((clients[1], false));
+			books[1].People.Add((clients[2], true));
+
+			//===
+			clients[0].Books.Add((books[0], false));
+			clients[0].Books.Add((books[1], false));
+
+			clients[1].Books.Add((books[0], true));
+			clients[1].Books.Add((books[1], false));
+
+			clients[2].Books.Add((books[1], true));
+
+			MainWindowViewModel mVM = new MainWindowViewModel(books, clients);
 			DataContext = mVM;
 
 			InitializeComponent();
 		}
 
-		
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			var listView = sender as ListView;
+			listView.ScrollIntoView(listView.SelectedItem);
+        }
     }
 }

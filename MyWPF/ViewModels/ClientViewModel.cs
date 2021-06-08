@@ -33,7 +33,15 @@ namespace MyWPF.ViewModels
                 OnPropertyChanged("Name");
             }
         }
-
+        public string Fam
+        {
+            get => Client.Fam;
+            set
+            {
+                Client.Fam = value;
+                OnPropertyChanged("Fam");
+            }
+        }
         // 
         private bool _isSelected = false;
         public bool IsSelected

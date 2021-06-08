@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using MyWPF.Commands;
 using MyWPF.Converters;
@@ -15,10 +16,11 @@ namespace MyWPF.ViewModels
 	{
         public Book Book { set; get; }
 
-		
+
 
 
         #region Секция свойств
+        #region Информация о книге
         public string Title
 		{
 			get => Book.Title;
@@ -62,43 +64,27 @@ namespace MyWPF.ViewModels
 		public bool Status
         {
 			get => Book.Status;
-            set
-            {
-				Book.Status = value;
-				OnPropertyChanged("Status");
-            }
         }
 
-		private string _newClient = "";
-		public string NewClientName
+		public int Count
         {
-			get => _newClient;
-			set
-            {
-				_newClient = value;
-				OnPropertyChanged("NewClientName");
-            }
-        }
-
-		private int _newClientID = 0;
-		public int NewClientID
-        {
-			get => _newClientID;
+			get => Book.Count;
             set
             {
-				_newClientID = value;
-				OnPropertyChanged("NewClientID");
+				Book.Count = value;
+				OnPropertyChanged("Count");
             }
         }
-
-		private bool _enableBook = false;
-		public bool EnableBook
+        #endregion
+        #region Для внесения изменений и вывода в дерево
+        private bool _isEnable = false;
+		public bool IsEnable
         {
-			get => _enableBook;
+			get => _isEnable;
             set
             {
-				_enableBook = value;
-				OnPropertyChanged("EnableBook");
+				_isEnable = value;
+				OnPropertyChanged("IsEnable");
             }
         }
 
@@ -114,42 +100,57 @@ namespace MyWPF.ViewModels
         }
         #endregion
 
+		public ClientViewModel SelectedClientVM { set; get; }
+        #endregion
+
         #region Секция команд и их вызываемых методов
 
-		// Смена статуса книги, т.е. ее либо взяли, либо вернули.
-		// Выполняется в случае если введены: фамилия и ID
-        private ICommand _changeStatusCommand;
-		public ICommand ChangeStatusCommand => _changeStatusCommand ?? (_changeStatusCommand = new RelayCommand(ChangeStatus));
+        #region Возврат и выдача книг
+        // Комманда выдать книгу клиенту
+        private ICommand _giveBookCommand;
+		public ICommand GiveBookCommand => _giveBookCommand ?? (_giveBookCommand = new RelayCommand(GiveBook));
 
-		private void ChangeStatus(object parameter)
+		private void GiveBook(object parameter)
 		{
-			if (Status)
-			{
-				if (NewClientName.Trim() != "" && NewClientID != 0)
-				{
-					Status = !Status;
-					Book.People.Add(new Client(NewClientName, NewClientID));
-					OnPropertyChanged("People");
-				}
-			}
-            else
+			if (SelectedClientVM != null && Status)
             {
-				Status = !Status;
+				Book.People.Add((SelectedClientVM.Client, true));
+				SelectedClientVM.Client.Books.Add((Book, true));
+				Count--;
+				OnPropertyChanged("Status");
 				OnPropertyChanged("People");
-            }
-			NewClientName = "";
-			NewClientID = 0;
+			}
 		}
 
+		// Команда получить книгу от клиента
+		private ICommand _getBookCommand;
+		public ICommand GetBookCommand => _getBookCommand ?? (_getBookCommand = new RelayCommand(GetBook));
+		private void GetBook(object parameter)
+        {
+			if (SelectedClientVM != null)
+			{
+				int index1 = Book.People.IndexOf((SelectedClientVM.Client, true));
+				int index2 = SelectedClientVM.Client.Books.IndexOf((Book, true));
+				if (index1 != -1 && index2 != -1)
+                {
+					Book.People[index1] = (SelectedClientVM.Client, false);
+					SelectedClientVM.Client.Books[index2] = (Book, false);
+					Count++;
+					OnPropertyChanged("Status");
+					OnPropertyChanged("People");
+				}	
+			}
+		}
+        #endregion
 
-		// Включение/выключение режима изменения информации о книге
-		// Просто открывает доступ к TextBox, к которым привязаны данные о книге
-		private ICommand _changeEnableCommand;
-		public ICommand ChangeEnableCommand => _changeEnableCommand ?? (_changeEnableCommand = new RelayCommand(ChangeEnable));
+        // Включение/выключение режима изменения информации о книге
+        // Просто открывает доступ к TextBox, к которым привязаны данные о книге
+        private ICommand _editBookCommand;
+		public ICommand EditBookCommand => _editBookCommand ?? (_editBookCommand = new RelayCommand(EditBook));
 
-		private void ChangeEnable(object parameter)
+		private void EditBook(object parameter)
 		{
-			EnableBook = !EnableBook;
+			IsEnable = !IsEnable;
 		}
 		#endregion
 
@@ -167,14 +168,12 @@ namespace MyWPF.ViewModels
 			{
 				if (Book.People.Count > 0) 
 				{
-					var res = new ObservableCollection<ClientViewModel>(Book.People.Select(c => new ClientViewModel(c, false)));
-					if (!Book.Status)
-						res[res.Count-1].Status = true;
+					var res = new ObservableCollection<ClientViewModel>(Book.People.Select(c => new ClientViewModel(c.Client, c.Status)));
 					return res;
 				}
 				else
 				{
-					return new ObservableCollection<ClientViewModel>() { new ClientViewModel(new Client("Предыдущих владельцев нет"), false) };
+					return new ObservableCollection<ClientViewModel>() { new ClientViewModel(new Client("Предыдущих владельцев нет", ""), false) };
 				}
 			}
             
@@ -186,5 +185,18 @@ namespace MyWPF.ViewModels
 		public event PropertyChangedEventHandler PropertyChanged;
 		private void OnPropertyChanged(string propertyName)
 			=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-	}
+
+        public BookViewModel Clone()
+        {
+			return new BookViewModel(new Book(Book.Title, Book.Author, new Publisher(Book.Publish.Name, Book.Publish.Address), Book.Count));
+        }
+
+		public void ChangeData(BookViewModel newBook)
+        {
+			Title = newBook.Title;
+			Author = newBook.Author;
+			PublisherName = newBook.PublisherName;
+			PublisherAddress = newBook.PublisherAddress;
+        }
+    }
 }
