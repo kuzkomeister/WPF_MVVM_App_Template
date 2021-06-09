@@ -39,8 +39,8 @@
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <ScrollViewer MaxHeight="600">
                     <StackPanel>
-                        <ListView ItemsSource="{Binding BooksList}" ItemTemplate="{StaticResource ListViewItemBook}" IsSynchronizedWithCurrentItem="True" Margin="0,10,0,0" 
-                          SelectedItem="{Binding SelectedBookVM, Mode=TwoWay}"/>
+                        <ListView x:Name="ListViewBooks" ItemsSource="{Binding BooksList}" ItemTemplate="{StaticResource ListViewItemBook}" IsSynchronizedWithCurrentItem="True" Margin="0,10,0,0" 
+                          SelectedItem="{Binding SelectedBookVM, Mode=TwoWay}" SelectionChanged="ListView_SelectionChanged"/>
                     </StackPanel>
                 </ScrollViewer>
             </Border>
@@ -78,9 +78,9 @@
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <ScrollViewer MaxHeight="600">
                     <StackPanel>
-                        <ListView IsSynchronizedWithCurrentItem="True"
+                        <ListView IsSynchronizedWithCurrentItem="True" x:Name="ListViewClients"
                             ItemsSource="{Binding Path=ClientsList}" 
-                            SelectedItem="{Binding Path=SelectedClientVM, Mode=TwoWay}">
+                            SelectedItem="{Binding Path=SelectedClientVM, Mode=TwoWay}" SelectionChanged="ListViewClients_SelectionChanged">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Border BorderBrush="Gray" BorderThickness="1" Margin="5">

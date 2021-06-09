@@ -85,7 +85,7 @@ namespace MyWPF
             {
 				_searchFamName = value;
 				OnPropertyChanged("SearchFamName");
-				SelectedClientVM = ClientsList.FirstOrDefault(client => (client.Fam + " " + client.Name).ToLower().StartsWith(SearchFamName.ToLower()));
+				SelectedClientVM = ClientsList.FirstOrDefault(client => (client.Fam + " " + client.Name + " " + client.Otch).ToLower().StartsWith(SearchFamName.ToLower()));
 			}
         }
 

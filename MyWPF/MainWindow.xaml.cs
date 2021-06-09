@@ -76,5 +76,19 @@ namespace MyWPF
 			InitializeComponent();
 		}
 
+        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			MainWindowViewModel VM = this.DataContext as MainWindowViewModel;
+			if (VM is MainWindowViewModel && VM.SelectedBookVM != null)
+				ListViewBooks.ScrollIntoView(VM.SelectedBookVM);
+
+        }
+
+        private void ListViewClients_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+			MainWindowViewModel VM = this.DataContext as MainWindowViewModel;
+			if (VM is MainWindowViewModel && VM.SelectedClientVM != null)
+				ListViewClients.ScrollIntoView(VM.SelectedClientVM);
+		}
     }
 }
