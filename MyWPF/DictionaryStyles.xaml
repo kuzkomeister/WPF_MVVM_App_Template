@@ -21,9 +21,6 @@
             <DataTrigger Binding="{Binding Path=Status}" Value="true">
                 <Setter TargetName="BookTitle" Property="Foreground" Value="Green"/>
             </DataTrigger>
-            <DataTrigger Binding="{Binding Path=Title}" Value="">
-                <Setter TargetName="BookTitle" Property="Text" Value="Без названия"/>
-            </DataTrigger>
         </HierarchicalDataTemplate.Triggers>
 
         <HierarchicalDataTemplate.ItemTemplate>
@@ -34,6 +31,8 @@
                     <TextBlock Name="UserFam" Text="{Binding Path=Fam}" Foreground="Green"/>
                     <TextBlock Text=" "/>
                     <TextBlock Name="UserName" Text="{Binding Path=Name}" Foreground="Green"/>
+                    <TextBlock Text=" "/>
+                    <TextBlock Name="UserOtch" Text="{Binding Path=Otch}" Foreground="Green"/>
                     <TextBlock Name="UserDefis" Text=" - " Foreground="Green"/>
                     <TextBlock Name="UserID" Text="{Binding Path=ID}" Foreground="Green"/>
                 </StackPanel>
@@ -47,9 +46,10 @@
                         <Setter TargetName="UserName" Property="Margin" Value="-20,0,0,0"/>
                     </DataTrigger>
 
-                    <DataTrigger Binding="{Binding Status}" Value="True">
+                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
                         <Setter TargetName="UserName" Property="Foreground" Value="Red"/>
                         <Setter TargetName="UserFam" Property="Foreground" Value="Red"/>
+                        <Setter TargetName="UserOtch" Property="Foreground" Value="Red"/>
                         <Setter TargetName="UserDefis" Property="Foreground" Value="Red"/>
                         <Setter TargetName="UserID" Property="Foreground" Value="Red"/>
                     </DataTrigger>
@@ -63,29 +63,56 @@
     <!-- Шаблон для отображения списка книг с подробной информацией -->
     <DataTemplate x:Key="ListViewItemBook" >
         <Border BorderBrush="Gray" BorderThickness="1" Margin="10">
-            <StackPanel Margin="10">
-                <TextBlock Name="txtTitle" Text="{Binding Title}" FontWeight="Bold"/>
-                <TextBlock Text="{Binding Author}"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Издательство:"/>
-                    <TextBlock Text="{Binding PublisherName}" Margin="10,0"/>
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <Image Source="/BookIcon.Png" Height="50" Margin="10"/>
+                <StackPanel>
+                    <TextBlock Name="txtTitle" Text="{Binding Title}" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding Author}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Издательство:"/>
+                        <TextBlock Text="{Binding PublisherName}" Margin="10,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Адрес:"/>
+                        <TextBlock Text="{Binding PublisherAddress}" Margin="10,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Количество:"/>
+                        <TextBlock Text="{Binding Count}" Margin="10,0"/>
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Адрес:"/>
-                    <TextBlock Text="{Binding PublisherAddress}" Margin="10,0"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Количество:"/>
-                    <TextBlock Text="{Binding Count}" Margin="10,0"/>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+
+    <!-- Шаблон для отображения книг взятых клиентом -->
+    <DataTemplate x:Key="ListViewItemClientBook" >
+        <Border BorderBrush="Gray" BorderThickness="1" Margin="10">
+            <StackPanel Margin="10" Orientation="Horizontal">
+                <Image Source="/BookIcon.Png" Height="50" Margin="10"/>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
+                        <TextBlock Name="StatusBook" Text="" FontWeight="Bold" Foreground="Red"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding Author}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Издательство:"/>
+                        <TextBlock Text="{Binding PublisherName}" Margin="10,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Адрес:"/>
+                        <TextBlock Text="{Binding PublisherAddress}" Margin="10,0"/>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </Border>
 
         <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding Title}" Value="">
-                <Setter TargetName="txtTitle" Property="Text" Value="Без названия"/>
+            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                <Setter TargetName="StatusBook" Property="Text" Value=" - На руках"/>
             </DataTrigger>
         </DataTemplate.Triggers>
     </DataTemplate>
-    
+
 </ResourceDictionary>

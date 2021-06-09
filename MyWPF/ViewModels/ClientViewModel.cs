@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
 using MyWPF.Models;
 
 namespace MyWPF.ViewModels
 {
-    class ClientViewModel : INotifyPropertyChanged
+    public class ClientViewModel : INotifyPropertyChanged
     {
         
 
 
-        public ClientViewModel(Client client, bool status)
+        public ClientViewModel(Client client, bool isSelected)
         {
             Client = client;    
-            Status = status;     // 
+            IsSelected = isSelected;     // 
         }
 
         #region Секция свойств
@@ -42,6 +44,15 @@ namespace MyWPF.ViewModels
                 OnPropertyChanged("Fam");
             }
         }
+        public string Otch
+        {
+            get => Client.Otch;
+            set
+            {
+                Client.Otch = value;
+                OnPropertyChanged("Otch");
+            }
+        }
         // 
         private bool _isSelected = false;
         public bool IsSelected
@@ -54,13 +65,34 @@ namespace MyWPF.ViewModels
             }
         }
 
-        // Является ли текущим владельцем книги
-        public bool Status { set; get; }
+        private bool _isExpanded = false;
+        public bool IsExpanded
+        {
+            get => _isExpanded;
+            set
+            {
+                _isExpanded = value;
+                OnPropertyChanged("IsExpanded");
+            }
+        }
+
+        public ObservableCollection<BookViewModel> Books
+        {
+            get => new ObservableCollection<BookViewModel>(Client.Books.Select(b => new BookViewModel(b.Book, b.Status)));
+        }
 
         #endregion
 
+        public ClientViewModel Clone()
+        {
+            return new ClientViewModel(new Client(Client.Name, Client.Fam, Client.Otch, Client.ID), false);
+        }
 
-
+        public void ChangeData(ClientViewModel newClient)
+        {
+            this.Name = newClient.Name;
+            this.Fam = newClient.Fam;
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

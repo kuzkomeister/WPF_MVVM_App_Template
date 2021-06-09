@@ -7,7 +7,7 @@ using MyWPF.Models;
 
 namespace MyWPF
 {
-	class Book
+	public class Book
 	{
         #region Секция полей
         public string Title { get; set; }		// Название книги

@@ -5,153 +5,131 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:MyWPF"
 		mc:Ignorable="d"
-		Title="Учет выдачи книг" Height="450" Width="800" Icon="/BookIcon.png">
+		Title="Учет выдачи книг" Height="800" Width="1125" Icon="/BookIcon.png">
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="125"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
 
-
+        <!-- Секция списка книг -->
         <StackPanel Grid.Column="0">
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-                    <TextBox Width="175" Text="{Binding SearchTitle, UpdateSourceTrigger=PropertyChanged}"/>
-                    <TextBlock Text="Поиск"/>
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                        <TextBox Width="175" Text="{Binding SearchTitle, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Поиск"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                        <Button  Width="125" Height="50" 
+                                Command="{Binding CreateNewBookCommand}" Margin="5">
+                            <TextBlock Text="Добавить новую книгу" TextWrapping="Wrap" TextAlignment="Center"/>
+                        </Button>
+                        <Button Width="125" Height="50"
+                                Command="{Binding EditBookCommand}" Margin="5">
+                            <TextBlock Text="Изменить данные текущей книги" TextWrapping="Wrap" TextAlignment="Center"/>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
             </Border>
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <ScrollViewer MaxHeight="600">
                     <StackPanel>
-                        <Button Content="Добавить новую книгу" HorizontalAlignment="Center" Command="{Binding CreateEmptyBook}" Margin="5"/>
                         <ListView ItemsSource="{Binding BooksList}" ItemTemplate="{StaticResource ListViewItemBook}" IsSynchronizedWithCurrentItem="True" Margin="0,10,0,0" 
-                          SelectedItem="{Binding SelectedBookViewModel, Mode=TwoWay}"/>
+                          SelectedItem="{Binding SelectedBookVM, Mode=TwoWay}"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </StackPanel>
+
+        <!-- Секция отдачи/возврата книг -->
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button Name="bGiveBook" Content="Выдать →" Margin="5" Width="100" 
+                                            Command="{Binding Path=GiveBookCommand}"/>
+            <Button Name="bGetBook" Content="← Получить" Margin="5" Width="100"
+                                            Command="{Binding Path=GetBookCommand}"/>
+        </StackPanel>
+
+        
+        <!-- Секция списка клиентов -->
+        <StackPanel Grid.Column="2">
+            <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                        <TextBox Width="175" Text="{Binding Path=SearchFamName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Text="Поиск"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                        <Button  Width="125" Height="50" 
+                                Command="{Binding CreateNewClientCommand}" Margin="5">
+                            <TextBlock Text="Добавить нового клиента" TextWrapping="Wrap" TextAlignment="Center"/>
+                        </Button>
+                        <Button Width="125" Height="50"
+                                Command="{Binding EditClientCommand}" Margin="5">
+                            <TextBlock Text="Изменить данные текущего клиента" TextWrapping="Wrap" TextAlignment="Center"/>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                <ScrollViewer MaxHeight="600">
+                    <StackPanel>
+                        <ListView IsSynchronizedWithCurrentItem="True"
+                            ItemsSource="{Binding Path=ClientsList}" 
+                            SelectedItem="{Binding Path=SelectedClientVM, Mode=TwoWay}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                                        <StackPanel Orientation="Horizontal" Margin="10">
+                                            <StackPanel.InputBindings>
+                                                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=DataContext.GetClientInfoCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                                            </StackPanel.InputBindings>
+                                            <Image Source="/UserIcon.Png" Height="50"/>
+                                            <StackPanel Orientation="Vertical">
+                                                <StackPanel.Resources>
+                                                    <Style TargetType="StackPanel">
+                                                        <Setter Property="Orientation" Value="Horizontal"/>
+                                                    </Style>
+                                                </StackPanel.Resources>
+                                                <StackPanel>
+                                                    <TextBlock Text="Идентификатор:" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding ID}" Margin="5,0"/>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                    <TextBlock Text="Фамилия:" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding Fam}" Margin="5,0"/>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                    <TextBlock Text="Имя:" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding Name}" Margin="5,0"/>
+                                                </StackPanel>
+                                                <StackPanel>
+                                                    <TextBlock Text="Отчество:" FontWeight="Bold"/>
+                                                    <TextBlock Text="{Binding Otch}" Margin="5,0"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
                     </StackPanel>
                 </ScrollViewer>
             </Border>
         </StackPanel>
 
 
-        <ContentControl Grid.Column="1" Content="{Binding CloneSelectedBookViewModel}">
-            <ContentControl.ContentTemplate>
-                <DataTemplate>
-                    <Border BorderBrush="Gray" BorderThickness="1" Margin="10">
-                        <StackPanel Margin="10">
-                            
-                            <!-- Секция с TextBoxs для изменения значений -->
-                            <Border BorderBrush="Gray" BorderThickness="1" Margin="10">
-                                <StackPanel>
-                                    <TextBlock Text="Название:" Margin="0,10,0,0"/>
-                                    <TextBox Text="{Binding Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsEnable}" />
+        
 
-                                    <TextBlock Text="Автор:" Margin="0,10,0,0"/>
-                                    <TextBox Text="{Binding Author, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsEnable}"/>
-
-                                    <TextBlock Text="Издатель:" Margin="0,10,0,0"/>
-                                    <TextBox Text="{Binding PublisherName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsEnable}"/>
-
-                                    <TextBlock Text="Адрес издателя:" Margin="0,10,0,0"/>
-                                    <TextBox Text="{Binding PublisherAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsEnable}"/>
-
-                                    <TextBlock Text="Количество:" Margin="0,10,0,0"/>
-                                    <TextBox Text="{Binding Count, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding IsEnable}"/>
-                                </StackPanel>
-                            </Border>
-                            
-                            <!-- Секция с кнопками для закрепления/удаления изменений -->
-                            <StackPanel Margin="10">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Button Name="bEdit" Content="Изменить" Height="20" Width="100" Margin="5" 
-                                            Command="{Binding EditBookCommand}"/>
-                                    <Button Name="bSave" Content="Сохранить" Height="20" Width="100" Margin="5" Visibility="Hidden" 
-                                            Command="{Binding Path=DataContext.SaveBookChanges, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
-                                </StackPanel>
-                            </StackPanel>
-                            
-                            <!-- Секция отдачи/возврата книг -->
-                            <StackPanel Margin="0,10,0,0">
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <Button Name="bGiveBook" Content="Выдать" Margin="5" Width="100" 
-                                            Command="{Binding Path=DataContext.SelectedBookViewModel.GiveBookCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
-                                    <Button Name="bGetBook" Content="Получить" Margin="5" Width="100"
-                                            Command="{Binding Path=DataContext.SelectedBookViewModel.GetBookCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
-                                </StackPanel>
-                            </StackPanel>
-
-                            <Border Name="ClientsPanel" BorderBrush="Gray" BorderThickness="1" Margin="5">
-                                <StackPanel>
-                                    <Border>
-                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-                                            <TextBox Width="125" Text="{Binding Path=DataContext.SearchFamName, RelativeSource={RelativeSource AncestorType={x:Type Window}}, UpdateSourceTrigger=PropertyChanged}"/>
-                                            <TextBlock Text="Поиск"/>
-                                        </StackPanel>
-                                    </Border>
-
-                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-                                        <ScrollViewer MaxHeight="350">
-                                            <StackPanel>
-                                                <ListView ItemsSource="{Binding Path=DataContext.ClientsList, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" 
-                                                          SelectedItem="{Binding Path=DataContext.SelectedBookViewModel.SelectedClientVM, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Mode=TwoWay}">
-                                                    <ListView.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-                                                                <StackPanel Orientation="Vertical" Margin="10">
-                                                                    <StackPanel.Resources>
-                                                                        <Style TargetType="StackPanel">
-                                                                            <Setter Property="Orientation" Value="Horizontal"/>
-                                                                        </Style>
-                                                                    </StackPanel.Resources>
-                                                                    <StackPanel>
-                                                                        <TextBlock Text="Идентификатор:" FontWeight="Bold"/>
-                                                                        <TextBlock Text="{Binding ID}" Margin="5,0"/>
-                                                                    </StackPanel>
-                                                                    <StackPanel>
-                                                                        <TextBlock Text="Фамилия:" FontWeight="Bold"/>
-                                                                        <TextBlock Text="{Binding Fam}" Margin="5,0"/>
-                                                                    </StackPanel>
-                                                                    <StackPanel>
-                                                                        <TextBlock Text="Имя:" FontWeight="Bold"/>
-                                                                        <TextBlock Text="{Binding Name}" Margin="5,0"/>
-                                                                    </StackPanel>
-                                                                </StackPanel>
-                                                            </Border>
-                                                        </DataTemplate>
-                                                    </ListView.ItemTemplate>
-                                                </ListView>
-                                            </StackPanel>
-                                        </ScrollViewer>
-                                    </Border>
-                                </StackPanel>
-                            </Border>
-
-                        </StackPanel>
-                    </Border>
-
-                    <DataTemplate.Triggers>
-                      
-                        <DataTrigger Binding="{Binding IsEnable}" Value="true">
-                            <Setter TargetName="bEdit" Property="Content" Value="Отменить"/>
-                            <Setter TargetName="bEdit" Property="Command" Value="{Binding Path=DataContext.CancelBookChanges, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
-                            <Setter TargetName="bSave" Property="Visibility" Value="Visible"/>
-                            <Setter TargetName="bGiveBook" Property="Visibility" Value="Hidden"/>
-                            <Setter TargetName="bGetBook" Property="Visibility" Value="Hidden"/>
-                            <Setter TargetName="ClientsPanel" Property="Visibility" Value="Hidden"/>
-                        </DataTrigger>
-                    </DataTemplate.Triggers>
-
-                </DataTemplate>
-            </ContentControl.ContentTemplate>
-        </ContentControl>
-
-
-        <TreeView Grid.Column="2" >
+        <TreeView Grid.Column="3" MaxHeight="675" VerticalAlignment="Top">
             <TreeViewItem Header="Список книг и их предыдущих владельцев" ItemsSource="{Binding BooksList}" ItemTemplate="{StaticResource TreeItemBook}" IsExpanded="True">
                 <TreeViewItem.ItemContainerStyle>
                     <Style TargetType="{x:Type TreeViewItem}">
-                        <Setter Property="IsExpanded" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
                     </Style>
                 </TreeViewItem.ItemContainerStyle>
             </TreeViewItem>

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\source\\repos\\WPFTestMVVM\\MyWPF\\MyWPF.csproj": {}
+    "D:\\Users\\KIKuznetsov\\source\\repos\\MyWPF\\MyWPF\\MyWPF.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\source\\repos\\WPFTestMVVM\\MyWPF\\MyWPF.csproj": {
+    "D:\\Users\\KIKuznetsov\\source\\repos\\MyWPF\\MyWPF\\MyWPF.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\source\\repos\\WPFTestMVVM\\MyWPF\\MyWPF.csproj",
+        "projectUniqueName": "D:\\Users\\KIKuznetsov\\source\\repos\\MyWPF\\MyWPF\\MyWPF.csproj",
         "projectName": "MyWPF",
-        "projectPath": "C:\\Users\\User\\source\\repos\\WPFTestMVVM\\MyWPF\\MyWPF.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\source\\repos\\WPFTestMVVM\\MyWPF\\obj\\",
+        "projectPath": "D:\\Users\\KIKuznetsov\\source\\repos\\MyWPF\\MyWPF\\MyWPF.csproj",
+        "packagesPath": "D:\\Users\\KIKuznetsov\\.nuget\\packages\\",
+        "outputPath": "D:\\Users\\KIKuznetsov\\source\\repos\\MyWPF\\MyWPF\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "D:\\Users\\KIKuznetsov\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -49,12 +49,6 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[3.1.13, 3.1.13]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
@@ -63,7 +57,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.104\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }

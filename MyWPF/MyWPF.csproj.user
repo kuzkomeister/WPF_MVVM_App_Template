@@ -7,10 +7,30 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\FormBook.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\FormClient.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\FormClientInfo.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="DictionaryStyles.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\FormBook.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\FormClient.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\FormClientInfo.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\User\source\repos\WPFTestMVVM\MyWPF\obj\Debug\netcoreapp3.1\
+D:\Users\KIKuznetsov\source\repos\MyWPF\MyWPF\obj\Debug\netcoreapp3.1\
 MyWPF
 none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1;
-C:\Users\User\source\repos\WPFTestMVVM\MyWPF\App.xaml
-2-989637640
+D:\Users\KIKuznetsov\source\repos\MyWPF\MyWPF\App.xaml
+5-405967425
 
-111806258248
+16-678877629
 192-1533232326
-DictionaryStyles.xaml;MainWindow.xaml;
+DictionaryStyles.xaml;MainWindow.xaml;Views\FormBook.xaml;Views\FormClient.xaml;Views\FormClientInfo.xaml;
 
 False
 

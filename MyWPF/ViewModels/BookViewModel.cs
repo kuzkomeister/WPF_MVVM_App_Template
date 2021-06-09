@@ -12,7 +12,7 @@ using MyWPF.Models;
 
 namespace MyWPF.ViewModels 
 {
-	class BookViewModel : INotifyPropertyChanged
+	public class BookViewModel : INotifyPropertyChanged
 	{
         public Book Book { set; get; }
 
@@ -76,18 +76,8 @@ namespace MyWPF.ViewModels
             }
         }
         #endregion
-        #region Для внесения изменений и вывода в дерево
-        private bool _isEnable = false;
-		public bool IsEnable
-        {
-			get => _isEnable;
-            set
-            {
-				_isEnable = value;
-				OnPropertyChanged("IsEnable");
-            }
-        }
-
+        #region Для вывода в дерево
+        
 		private bool _isSelected = false;
 		public bool IsSelected
         {
@@ -98,66 +88,27 @@ namespace MyWPF.ViewModels
 				OnPropertyChanged("IsSelected");
             }
         }
-        #endregion
 
-		public ClientViewModel SelectedClientVM { set; get; }
-        #endregion
-
-        #region Секция команд и их вызываемых методов
-
-        #region Возврат и выдача книг
-        // Комманда выдать книгу клиенту
-        private ICommand _giveBookCommand;
-		public ICommand GiveBookCommand => _giveBookCommand ?? (_giveBookCommand = new RelayCommand(GiveBook));
-
-		private void GiveBook(object parameter)
+		private bool _isExpanded = false;
+		public bool IsExpanded
 		{
-			if (SelectedClientVM != null && Status)
-            {
-				Book.People.Add((SelectedClientVM.Client, true));
-				SelectedClientVM.Client.Books.Add((Book, true));
-				Count--;
-				OnPropertyChanged("Status");
-				OnPropertyChanged("People");
-			}
-		}
-
-		// Команда получить книгу от клиента
-		private ICommand _getBookCommand;
-		public ICommand GetBookCommand => _getBookCommand ?? (_getBookCommand = new RelayCommand(GetBook));
-		private void GetBook(object parameter)
-        {
-			if (SelectedClientVM != null)
+			get => _isExpanded;
+			set
 			{
-				int index1 = Book.People.IndexOf((SelectedClientVM.Client, true));
-				int index2 = SelectedClientVM.Client.Books.IndexOf((Book, true));
-				if (index1 != -1 && index2 != -1)
-                {
-					Book.People[index1] = (SelectedClientVM.Client, false);
-					SelectedClientVM.Client.Books[index2] = (Book, false);
-					Count++;
-					OnPropertyChanged("Status");
-					OnPropertyChanged("People");
-				}	
+				_isExpanded = value;
+				OnPropertyChanged("IsExpanded");
 			}
-		}
-        #endregion
-
-        // Включение/выключение режима изменения информации о книге
-        // Просто открывает доступ к TextBox, к которым привязаны данные о книге
-        private ICommand _editBookCommand;
-		public ICommand EditBookCommand => _editBookCommand ?? (_editBookCommand = new RelayCommand(EditBook));
-
-		private void EditBook(object parameter)
-		{
-			IsEnable = !IsEnable;
 		}
 		#endregion
+		#endregion
+
 
 		#region Секция конструктора
-		public BookViewModel(Book book)
+		public BookViewModel(Book book, bool isSelected=false, bool isExpanded=false)
 		{
 			this.Book = book;
+			IsSelected = isSelected;
+			IsExpanded = isExpanded;
 		}
 		#endregion
 
@@ -173,7 +124,7 @@ namespace MyWPF.ViewModels
 				}
 				else
 				{
-					return new ObservableCollection<ClientViewModel>() { new ClientViewModel(new Client("Предыдущих владельцев нет", ""), false) };
+					return new ObservableCollection<ClientViewModel>() { new ClientViewModel(new Client("Предыдущих владельцев нет", "",""), false) };
 				}
 			}
             
@@ -188,7 +139,7 @@ namespace MyWPF.ViewModels
 
         public BookViewModel Clone()
         {
-			return new BookViewModel(new Book(Book.Title, Book.Author, new Publisher(Book.Publish.Name, Book.Publish.Address), Book.Count));
+			return new BookViewModel(new Book(Book.Title, Book.Author, new Publisher(Book.Publish.Name, Book.Publish.Address), Book.Count), false);
         }
 
 		public void ChangeData(BookViewModel newBook)
@@ -198,6 +149,12 @@ namespace MyWPF.ViewModels
 			PublisherName = newBook.PublisherName;
 			PublisherAddress = newBook.PublisherAddress;
 			Count = newBook.Count;
+        }
+
+		public void Declare()
+        {
+			OnPropertyChanged("People");
+			OnPropertyChanged("Status");
         }
     }
 }

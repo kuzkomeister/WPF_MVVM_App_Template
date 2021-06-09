@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MyWPF.Models
 {
-    class Publisher
+    public class Publisher
     {
         #region Секция полей
         public string Name { set; get; }        // Название издания

@@ -11,6 +11,7 @@ using MyWPF.Commands;
 using MyWPF.ViewModels;
 using System.Windows.Controls;
 using MyWPF.Models;
+using MyWPF.Views;
 
 namespace MyWPF
 {
@@ -24,44 +25,40 @@ namespace MyWPF
 		public ObservableCollection<ClientViewModel> ClientsList { set; get; }
 
 		// Текущая выбранная книга
-		private BookViewModel _selectedBookViewModel;
-		public BookViewModel SelectedBookViewModel 
+		private BookViewModel _selectedBookVM;
+		public BookViewModel SelectedBookVM 
 		{
-			get => _selectedBookViewModel;
+			get => _selectedBookVM;
 			set
 			{
 				if (value != null)
 				{
-					if (_selectedBookViewModel != null)
+					if (_selectedBookVM != null)
 					{
-						if (!CloneSelectedBookViewModel.IsEnable)
-						{
-							_selectedBookViewModel.IsSelected = false;
-							_selectedBookViewModel = value;
-							_selectedBookViewModel.IsSelected = true;
-							CloneSelectedBookViewModel = (BookViewModel)_selectedBookViewModel.Clone();
-						}
+
+						_selectedBookVM.IsExpanded = false;
+						_selectedBookVM = value;
+						_selectedBookVM.IsExpanded = true;
+
 					}
 					else
 					{
-						_selectedBookViewModel = value;
-						_selectedBookViewModel.IsSelected = true;
-						CloneSelectedBookViewModel = (BookViewModel)_selectedBookViewModel.Clone();
+						_selectedBookVM = value;
+						_selectedBookVM.IsExpanded = true;
 					}
-					OnPropertyChanged("SelectedBookViewModel");
+					OnPropertyChanged("SelectedBookVM");
 				}
 			}
 		}
 
-		// Клон текущей выбранной книги (для внесения изменений)
-		private BookViewModel _cloneSelectedBookViewModel;
-		public BookViewModel CloneSelectedBookViewModel
+		private ClientViewModel _selectedClientVM;
+		public ClientViewModel SelectedClientVM
         {
-			get => _cloneSelectedBookViewModel;
+			get => _selectedClientVM;
             set
             {
-				_cloneSelectedBookViewModel = value;
-				OnPropertyChanged("CloneSelectedBookViewModel");
+				_selectedClientVM = value;
+				OnPropertyChanged("SelectedClientVM");
             }
         }
 
@@ -74,7 +71,7 @@ namespace MyWPF
             {
 				_searchTitle = value;
 				OnPropertyChanged("SearchTitle");
-				SelectedBookViewModel = BooksList.FirstOrDefault(s => s.Title.ToLower().StartsWith(SearchTitle.ToLower()));
+				SelectedBookVM = BooksList.FirstOrDefault(book => book.Title.ToLower().StartsWith(SearchTitle.ToLower()));
 			}
 			
         }
@@ -88,44 +85,116 @@ namespace MyWPF
             {
 				_searchFamName = value;
 				OnPropertyChanged("SearchFamName");
-				SelectedBookViewModel.SelectedClientVM = ClientsList.FirstOrDefault(client => (client.Fam + " " + client.Name).ToLower().StartsWith(SearchFamName.ToLower()));
+				SelectedClientVM = ClientsList.FirstOrDefault(client => (client.Fam + " " + client.Name).ToLower().StartsWith(SearchFamName.ToLower()));
 			}
         }
+
         #endregion
 
         #region Секция команд и их вызываемых методов
-		// Создание новой пустой книги
-        private ICommand _createEmptyBook;
-		public ICommand CreateEmptyBook => _createEmptyBook ?? (_createEmptyBook = new RelayCommand(AddEmptyBook));
+        #region Создание и изменение книги или клиента
+        // Создание новой пустой книги
+        private ICommand _createNewBookCommand;
+		public ICommand CreateNewBookCommand => _createNewBookCommand ?? (_createNewBookCommand = new RelayCommand(CreateNewBook));
 
-		private void AddEmptyBook(object parameter)
+		private void CreateNewBook(object parameter)
 		{
-			BooksList.Add(new BookViewModel(new Book("", 1)));
+			BookViewModel newBook = new BookViewModel(new Book("", 0), false);
+			FormBook fBook = new FormBook(newBook);
+			fBook.ShowDialog();
+
+			if (newBook.Title.Trim() != "" && newBook.Count != 0)
+            {
+				BooksList.Add(newBook);
+				SelectedBookVM = newBook;
+            }
 		}
 
-		// Сохранить изменения книги
-		private ICommand _saveBookChanges;
-		public ICommand SaveBookChanges => _saveBookChanges ?? (_saveBookChanges = new RelayCommand(SaveChanges));
+		// Создание формы для изменения данных о книге
+		private ICommand _editBookCommand;
+		public ICommand EditBookCommand => _editBookCommand ?? (_editBookCommand = new RelayCommand(EditBook));
 
-		private void SaveChanges(object parameter)
+		private void EditBook(object parameter)
         {
-			SelectedBookViewModel.ChangeData(CloneSelectedBookViewModel);
-			CloneSelectedBookViewModel.IsEnable = false;
+			FormBook fBook = new FormBook(SelectedBookVM);
+			fBook.ShowDialog();
         }
 
-		// Отменить изменения
-		private ICommand _cancelBookChanges;
-		public ICommand CancelBookChanges => _cancelBookChanges ?? (_cancelBookChanges = new RelayCommand(CancelChanges));
 
-		private void CancelChanges(object parameter)
+		// Создание нового клиента
+		private ICommand _createNewClientCommand;
+		public ICommand CreateNewClientCommand => _createNewClientCommand ?? (_createNewClientCommand = new RelayCommand(CreateNewClient));
+
+		private void CreateNewClient(object parameter)
         {
-			CloneSelectedBookViewModel.ChangeData(SelectedBookViewModel);
-			CloneSelectedBookViewModel.IsEnable = false;
-        }
-        #endregion
+			ClientViewModel newClient = new ClientViewModel(new Client("", "", ""), false);
+			FormClient fClient = new FormClient(newClient);
+			fClient.ShowDialog();
 
-        #region Секция конструкторов
-        public MainWindowViewModel(List<Book> books, List<Client> clients)
+			if (newClient.Name.Trim() != "" && newClient.Fam.Trim() != "" && newClient.Otch.Trim() != "")
+			{
+				ClientsList.Add(newClient);
+				SelectedClientVM = newClient;
+			}
+        }
+
+		// Создание формы для изменения данных о клиенте
+		private ICommand _editClientCommand;
+		public ICommand EditClientCommand => _editClientCommand ?? (_editClientCommand = new RelayCommand(EditClient));
+
+		private void EditClient(object parameter)
+        {
+			FormClient fClient = new FormClient(SelectedClientVM);
+			fClient.ShowDialog();
+		}
+
+
+		private ICommand _getClientInfoCommand;
+		public ICommand GetClientInfoCommand => _getClientInfoCommand ?? (_getClientInfoCommand = new RelayCommand(GetClientInfo));
+
+		private void GetClientInfo(object parameter)
+        {
+			FormClientInfo fClientInfo = new FormClientInfo(SelectedClientVM);
+			fClientInfo.Show();
+        }
+		#endregion
+
+		#region Возврат и выдача книг
+		// Комманда выдать книгу клиенту
+		private ICommand _giveBookCommand;
+		public ICommand GiveBookCommand => _giveBookCommand ?? (_giveBookCommand = new RelayCommand(GiveBook));
+
+		private void GiveBook(object parameter)
+		{
+			if (SelectedBookVM.Status)
+			{
+				SelectedBookVM.Book.People.Add((SelectedClientVM.Client, true));
+				SelectedClientVM.Client.Books.Add((SelectedBookVM.Book, true));
+				SelectedBookVM.Count--;
+				SelectedBookVM.Declare();
+			}
+		}
+
+		// Команда получить книгу от клиента
+		private ICommand _getBookCommand;
+		public ICommand GetBookCommand => _getBookCommand ?? (_getBookCommand = new RelayCommand(GetBook));
+		private void GetBook(object parameter)
+		{
+			int index1 = SelectedBookVM.Book.People.IndexOf((SelectedClientVM.Client, true));
+			int index2 = SelectedClientVM.Client.Books.IndexOf((SelectedBookVM.Book, true));
+			if (index1 != -1 && index2 != -1)
+			{
+				SelectedBookVM.Book.People[index1] = (SelectedClientVM.Client, false);
+				SelectedClientVM.Client.Books[index2] = (SelectedBookVM.Book, false);
+				SelectedBookVM.Count++;
+				SelectedBookVM.Declare();
+			}
+		}
+		#endregion
+		#endregion
+
+		#region Секция конструкторов
+		public MainWindowViewModel(List<Book> books, List<Client> clients)
 		{
 			BooksList = new ObservableCollection<BookViewModel>(books.Select(b => new BookViewModel(b)));
 			ClientsList = new ObservableCollection<ClientViewModel>(clients.Select(c => new ClientViewModel(c, false)));
