@@ -100,15 +100,15 @@ namespace MyWPF
 		private void CreateNewBook(object parameter)
 		{
 			BookViewModel newBook = new BookViewModel(new Book("", 0), false);
-			FormBook fBook = new FormBook(newBook);
-			fBook.ShowDialog();
+            FormBook fBook = new FormBook(newBook);
+            fBook.ShowDialog();
 
-			if (newBook.Title.Trim() != "" && newBook.Count != 0)
+            if (newBook.Title.Trim() != "" && newBook.Count != 0)
             {
-				BooksList.Add(newBook);
-				SelectedBookVM = newBook;
+                BooksList.Add(newBook);
+                SelectedBookVM = newBook;
             }
-		}
+        }
 
 		// Создание формы для изменения данных о книге
 		private ICommand _editBookCommand;

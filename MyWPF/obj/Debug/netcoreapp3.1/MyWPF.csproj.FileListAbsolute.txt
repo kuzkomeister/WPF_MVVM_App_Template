@@ -46,3 +46,4 @@ D:\Users\KIKuznetsov\source\repos\MyWPF\MyWPF\obj\Debug\netcoreapp3.1\Views\Form
 D:\Users\KIKuznetsov\source\repos\MyWPF\MyWPF\obj\Debug\netcoreapp3.1\Views\FormClientInfo.g.cs
 D:\Users\KIKuznetsov\source\repos\MyWPF\MyWPF\obj\Debug\netcoreapp3.1\Views\FormClientInfo.baml
 D:\Users\KIKuznetsov\source\repos\MyWPF\MyWPF\obj\Debug\netcoreapp3.1\MyWPF.csprojAssemblyReference.cache
+D:\Users\KIKuznetsov\source\repos\MyWPF\MyWPF\obj\Debug\netcoreapp3.1\GeneratedInternalTypeHelper.g.cs

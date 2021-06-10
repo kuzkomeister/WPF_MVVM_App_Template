@@ -3,10 +3,14 @@
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-		xmlns:local="clr-namespace:MyWPF"
+		xmlns:local="clr-namespace:MyWPF.Converters"
 		mc:Ignorable="d"
 		Title="Учет выдачи книг" Height="800" Width="1125" Icon="/BookIcon.png">
 
+    <Window.Resources>
+        <local:OffsetConverter x:Key="ListViewOffsetConverter"/>
+    </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -14,7 +18,9 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight}"/>
+        </Grid.RowDefinitions>
 
         <!-- Секция списка книг -->
         <StackPanel Grid.Column="0">
@@ -37,7 +43,7 @@
                 </StackPanel>
             </Border>
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-                <ScrollViewer MaxHeight="600">
+                <ScrollViewer Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight, Converter={StaticResource ListViewOffsetConverter}, ConverterParameter=-160}">
                     <StackPanel>
                         <ListView x:Name="ListViewBooks" ItemsSource="{Binding BooksList}" ItemTemplate="{StaticResource ListViewItemBook}" IsSynchronizedWithCurrentItem="True" Margin="0,10,0,0" 
                           SelectedItem="{Binding SelectedBookVM, Mode=TwoWay}" SelectionChanged="ListView_SelectionChanged"/>
@@ -76,7 +82,7 @@
                 </StackPanel>
             </Border>
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
-                <ScrollViewer MaxHeight="600">
+                <ScrollViewer Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight, Converter={StaticResource ListViewOffsetConverter}, ConverterParameter=-160}">
                     <StackPanel>
                         <ListView IsSynchronizedWithCurrentItem="True" x:Name="ListViewClients"
                             ItemsSource="{Binding Path=ClientsList}" 
@@ -123,9 +129,9 @@
         </StackPanel>
 
 
-        
 
-        <TreeView Grid.Column="3" MaxHeight="675" VerticalAlignment="Top">
+
+        <TreeView Grid.Column="3" MaxHeight="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight, Converter={StaticResource ListViewOffsetConverter}, ConverterParameter=-43}" VerticalAlignment="Top">
             <TreeViewItem Header="Список книг и их предыдущих владельцев" ItemsSource="{Binding BooksList}" ItemTemplate="{StaticResource TreeItemBook}" IsExpanded="True">
                 <TreeViewItem.ItemContainerStyle>
                     <Style TargetType="{x:Type TreeViewItem}">

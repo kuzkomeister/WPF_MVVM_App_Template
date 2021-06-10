@@ -22,7 +22,6 @@ namespace MyWPF
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
 	/// 
-	class FontWeightEqualConverter : ObjectsEqualConverter<System.Windows.FontWeight> { }
 	public partial class MainWindow : Window
 	{
 

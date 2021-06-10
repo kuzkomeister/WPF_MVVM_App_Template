@@ -3,11 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MyWPF.Views"
+        xmlns:local="clr-namespace:MyWPF.Converters"
         mc:Ignorable="d"
         Title="Информация о клиенте" ResizeMode="NoResize"
         Icon="/UserIcon.png"
         Height="450" Width="400">
+
+    <Window.Resources>
+        <local:OffsetConverter x:Key="ListViewOffsetConverter"/>
+    </Window.Resources>
+
     <Grid>
         <StackPanel Margin="30">
             <Border BorderBrush="Gray" BorderThickness="1">
@@ -33,7 +38,7 @@
             </Border>
 
             <Border BorderBrush="Gray" BorderThickness="1" Margin="0,10,0,0">
-                <ScrollViewer MaxHeight="250">
+                <ScrollViewer Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight, Converter={StaticResource ListViewOffsetConverter}, ConverterParameter=-175}">
                     <ListView ItemsSource="{Binding Books}" ItemTemplate="{StaticResource ListViewItemClientBook}" IsSynchronizedWithCurrentItem="True"/>
                 </ScrollViewer>
             </Border>
