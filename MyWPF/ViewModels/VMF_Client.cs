@@ -6,10 +6,10 @@ using MyWPF.Commands;
 
 namespace MyWPF.ViewModels
 {
-    class fClientViewModel
+    class VMF_Client
     {
-        public ClientViewModel CloneClientVM { set; get; }  // Копия для внесения изменений
-        public ClientViewModel OrigClientVM { set; get; }     // Оригинал для итогового внесения изменений
+        public VM_Client VCloneClient { set; get; }  // Копия для внесения изменений
+        public VM_Client OrigClient { set; get; }     // Оригинал для итогового внесения изменений
 
         public Action CloseAction { set; get; }             // Закрыть окно
 
@@ -19,14 +19,14 @@ namespace MyWPF.ViewModels
 
         private void SaveChanges(object parameter)
         {
-            OrigClientVM.ChangeData(CloneClientVM);
+            OrigClient.ChangeData(VCloneClient);
             CloseAction();
         }
 
-        public fClientViewModel(ClientViewModel client)
+        public VMF_Client(VM_Client client)
         {
-            OrigClientVM = client;
-            CloneClientVM = client.Clone();
+            OrigClient = client;
+            VCloneClient = client.Clone();
         }
     }
 }

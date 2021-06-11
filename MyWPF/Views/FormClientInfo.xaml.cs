@@ -18,7 +18,7 @@ namespace MyWPF.Views
     /// </summary>
     public partial class FormClientInfo : Window
     {
-        public FormClientInfo(ClientViewModel client)
+        public FormClientInfo(VM_Client client)
         {
             DataContext = client;
             InitializeComponent();

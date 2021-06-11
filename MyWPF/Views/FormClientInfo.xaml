@@ -23,15 +23,15 @@
                     <StackPanel Margin="10,0">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Фамилия:" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Fam}" Margin="5,0"/>
+                            <TextBlock Text="{Binding VLastName}" Margin="5,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Имя:" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Name}" Margin="5,0"/>
+                            <TextBlock Text="{Binding VFirstName}" Margin="5,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Отчество:" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Otch}" Margin="5,0"/>
+                            <TextBlock Text="{Binding VPatronymic}" Margin="5,0"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
@@ -39,7 +39,7 @@
 
             <Border BorderBrush="Gray" BorderThickness="1" Margin="0,10,0,0">
                 <ScrollViewer Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight, Converter={StaticResource ListViewOffsetConverter}, ConverterParameter=-175}">
-                    <ListView ItemsSource="{Binding Books}" ItemTemplate="{StaticResource ListViewItemClientBook}" IsSynchronizedWithCurrentItem="True"/>
+                    <ListView ItemsSource="{Binding VBooks}" ItemTemplate="{StaticResource ListViewItemClientBook}" IsSynchronizedWithCurrentItem="True"/>
                 </ScrollViewer>
             </Border>
         </StackPanel>

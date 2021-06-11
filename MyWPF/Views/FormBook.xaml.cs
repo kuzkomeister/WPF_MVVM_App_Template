@@ -18,9 +18,9 @@ namespace MyWPF.Views
     /// </summary>
     public partial class FormBook : Window
     {
-        public FormBook(BookViewModel book)
+        public FormBook(VM_Book book)
         {
-            fBookViewModel VM = new fBookViewModel(book);
+            VMF_Book VM = new VMF_Book(book);
             DataContext = VM;
             if (VM.CloseAction == null)
                 VM.CloseAction = new Action(this.Close);

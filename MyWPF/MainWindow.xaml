@@ -27,7 +27,7 @@
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-                        <TextBox Width="175" Text="{Binding SearchTitle, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Width="175" Text="{Binding VSearchTitleAuthor, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Text="Поиск"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
@@ -45,8 +45,8 @@
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <ScrollViewer Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight, Converter={StaticResource ListViewOffsetConverter}, ConverterParameter=-160}">
                     <StackPanel>
-                        <ListView x:Name="ListViewBooks" ItemsSource="{Binding BooksList}" ItemTemplate="{StaticResource ListViewItemBook}" IsSynchronizedWithCurrentItem="True" Margin="0,10,0,0" 
-                          SelectedItem="{Binding SelectedBookVM, Mode=TwoWay}" SelectionChanged="ListView_SelectionChanged"/>
+                        <ListView x:Name="ListViewBooks" ItemsSource="{Binding VBooksList}" ItemTemplate="{StaticResource ListViewItemBook}" IsSynchronizedWithCurrentItem="True" Margin="0,10,0,0" 
+                          SelectedItem="{Binding VSelectedBook, Mode=TwoWay}" SelectionChanged="ListView_SelectionChanged"/>
                     </StackPanel>
                 </ScrollViewer>
             </Border>
@@ -66,7 +66,7 @@
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
-                        <TextBox Width="175" Text="{Binding Path=SearchFamName, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Width="175" Text="{Binding Path=VSearchFullNameID, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Text="Поиск"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
@@ -85,8 +85,8 @@
                 <ScrollViewer Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight, Converter={StaticResource ListViewOffsetConverter}, ConverterParameter=-160}">
                     <StackPanel>
                         <ListView IsSynchronizedWithCurrentItem="True" x:Name="ListViewClients"
-                            ItemsSource="{Binding Path=ClientsList}" 
-                            SelectedItem="{Binding Path=SelectedClientVM, Mode=TwoWay}" SelectionChanged="ListViewClients_SelectionChanged">
+                            ItemsSource="{Binding Path=VClientsList}" 
+                            SelectedItem="{Binding Path=VSelectedClient, Mode=TwoWay}" SelectionChanged="ListViewClients_SelectionChanged">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
@@ -103,19 +103,19 @@
                                                 </StackPanel.Resources>
                                                 <StackPanel>
                                                     <TextBlock Text="Идентификатор:" FontWeight="Bold"/>
-                                                    <TextBlock Text="{Binding ID}" Margin="5,0"/>
+                                                    <TextBlock Text="{Binding VID}" Margin="5,0"/>
                                                 </StackPanel>
                                                 <StackPanel>
                                                     <TextBlock Text="Фамилия:" FontWeight="Bold"/>
-                                                    <TextBlock Text="{Binding Fam}" Margin="5,0"/>
+                                                    <TextBlock Text="{Binding VLastName}" Margin="5,0"/>
                                                 </StackPanel>
                                                 <StackPanel>
                                                     <TextBlock Text="Имя:" FontWeight="Bold"/>
-                                                    <TextBlock Text="{Binding Name}" Margin="5,0"/>
+                                                    <TextBlock Text="{Binding VFirstName}" Margin="5,0"/>
                                                 </StackPanel>
                                                 <StackPanel>
                                                     <TextBlock Text="Отчество:" FontWeight="Bold"/>
-                                                    <TextBlock Text="{Binding Otch}" Margin="5,0"/>
+                                                    <TextBlock Text="{Binding VPatronymic}" Margin="5,0"/>
                                                 </StackPanel>
                                             </StackPanel>
                                         </StackPanel>
@@ -132,10 +132,10 @@
 
 
         <TreeView Grid.Column="3" MaxHeight="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight, Converter={StaticResource ListViewOffsetConverter}, ConverterParameter=-43}" VerticalAlignment="Top">
-            <TreeViewItem Header="Список книг и их предыдущих владельцев" ItemsSource="{Binding BooksList}" ItemTemplate="{StaticResource TreeItemBook}" IsExpanded="True">
+            <TreeViewItem Header="Список книг и их предыдущих владельцев" ItemsSource="{Binding VBooksList}" ItemTemplate="{StaticResource TreeItemBook}" IsExpanded="True">
                 <TreeViewItem.ItemContainerStyle>
                     <Style TargetType="{x:Type TreeViewItem}">
-                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"/>
+                        <Setter Property="IsExpanded" Value="{Binding VIsExpanded, Mode=TwoWay}"/>
                     </Style>
                 </TreeViewItem.ItemContainerStyle>
             </TreeViewItem>

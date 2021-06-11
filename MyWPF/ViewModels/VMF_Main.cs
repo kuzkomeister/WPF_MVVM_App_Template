@@ -15,77 +15,77 @@ using MyWPF.Views;
 
 namespace MyWPF
 {
-	class MainWindowViewModel : INotifyPropertyChanged
+	class VMF_Main : INotifyPropertyChanged
 	{
 		
 
         #region Секция свойств
 		// Список книг
-        public ObservableCollection<BookViewModel> BooksList { set; get; }
-		public ObservableCollection<ClientViewModel> ClientsList { set; get; }
+        public ObservableCollection<VM_Book> VBooksList { set; get; }
+		public ObservableCollection<VM_Client> VClientsList { set; get; }
 
 		// Текущая выбранная книга
-		private BookViewModel _selectedBookVM;
-		public BookViewModel SelectedBookVM 
+		private VM_Book _selectedBook;
+		public VM_Book VSelectedBook 
 		{
-			get => _selectedBookVM;
+			get => _selectedBook;
 			set
 			{
 				if (value != null)
 				{
-					if (_selectedBookVM != null)
+					if (_selectedBook != null)
 					{
 
-						_selectedBookVM.IsExpanded = false;
-						_selectedBookVM = value;
-						_selectedBookVM.IsExpanded = true;
+						_selectedBook.VIsExpanded = false;
+						_selectedBook = value;
+						_selectedBook.VIsExpanded = true;
 
 					}
 					else
 					{
-						_selectedBookVM = value;
-						_selectedBookVM.IsExpanded = true;
+						_selectedBook = value;
+						_selectedBook.VIsExpanded = true;
 					}
-					OnPropertyChanged("SelectedBookVM");
+					OnPropertyChanged("VSelectedBook");
 				}
 			}
 		}
 
-		private ClientViewModel _selectedClientVM;
-		public ClientViewModel SelectedClientVM
+		private VM_Client _selectedClient;
+		public VM_Client VSelectedClient
         {
-			get => _selectedClientVM;
+			get => _selectedClient;
             set
             {
-				_selectedClientVM = value;
-				OnPropertyChanged("SelectedClientVM");
+				_selectedClient = value;
+				OnPropertyChanged("VSelectedClient");
             }
         }
 
 		// Строка для поиска книги по названию
-		private string _searchTitle;
-		public string SearchTitle
+		private string _searchTitleAuthor;
+		public string VSearchTitleAuthor
         {
-			get => _searchTitle;
+			get => _searchTitleAuthor;
             set
             {
-				_searchTitle = value;
-				OnPropertyChanged("SearchTitle");
-				SelectedBookVM = BooksList.FirstOrDefault(book => (book.Title.ToLower() + " " + book.Author.ToLower()).Contains(SearchTitle.ToLower()));
+				_searchTitleAuthor = value;
+				OnPropertyChanged("VSearchTitleAuthor");
+				VSelectedBook = VBooksList.FirstOrDefault(book => (book.VTitle.ToLower() + " " + book.VAuthor.ToLower()).Contains(VSearchTitleAuthor.ToLower()));
 			}
 			
         }
 
 		// Строка для поиска клиента по фамилии
-		private string _searchFamName;
-		public string SearchFamName
+		private string _searchFullNameID;
+		public string VSearchFullNameID
         {
-			get => _searchFamName;
+			get => _searchFullNameID;
             set
             {
-				_searchFamName = value;
-				OnPropertyChanged("SearchFamName");
-				SelectedClientVM = ClientsList.FirstOrDefault(client => (client.Fam + " " + client.Name + " " + client.Otch + " " + client.ID).ToLower().Contains(SearchFamName.ToLower()));
+				_searchFullNameID = value;
+				OnPropertyChanged("VSearchFullNameID");
+				VSelectedClient = VClientsList.FirstOrDefault(client => (client.VLastName + " " + client.VFirstName + " " + client.VPatronymic + " " + client.VID).ToLower().Contains(VSearchFullNameID.ToLower()));
 			}
         }
 
@@ -99,14 +99,14 @@ namespace MyWPF
 
 		private void CreateNewBook(object parameter)
 		{
-			BookViewModel newBook = new BookViewModel(new Book("", 0), false);
+			VM_Book newBook = new VM_Book(new Book("", 0), false);
             FormBook fBook = new FormBook(newBook);
             fBook.ShowDialog();
 
-            if (newBook.Title.Trim() != "" && newBook.Count != 0)
+            if (newBook.VTitle.Trim() != "" && newBook.VCount != 0)
             {
-                BooksList.Add(newBook);
-                SelectedBookVM = newBook;
+                VBooksList.Add(newBook);
+                VSelectedBook = newBook;
             }
         }
 
@@ -116,7 +116,7 @@ namespace MyWPF
 
 		private void EditBook(object parameter)
         {
-			FormBook fBook = new FormBook(SelectedBookVM);
+			FormBook fBook = new FormBook(VSelectedBook);
 			fBook.ShowDialog();
         }
 
@@ -127,14 +127,14 @@ namespace MyWPF
 
 		private void CreateNewClient(object parameter)
         {
-			ClientViewModel newClient = new ClientViewModel(new Client("", "", ""), false);
+			VM_Client newClient = new VM_Client(new Client("", "", ""), false);
 			FormClient fClient = new FormClient(newClient);
 			fClient.ShowDialog();
 
-			if (newClient.Name.Trim() != "" && newClient.Fam.Trim() != "" && newClient.Otch.Trim() != "")
+			if (newClient.VFirstName.Trim() != "" && newClient.VLastName.Trim() != "" && newClient.VPatronymic.Trim() != "")
 			{
-				ClientsList.Add(newClient);
-				SelectedClientVM = newClient;
+				VClientsList.Add(newClient);
+				VSelectedClient = newClient;
 			}
         }
 
@@ -144,7 +144,7 @@ namespace MyWPF
 
 		private void EditClient(object parameter)
         {
-			FormClient fClient = new FormClient(SelectedClientVM);
+			FormClient fClient = new FormClient(VSelectedClient);
 			fClient.ShowDialog();
 		}
 
@@ -154,7 +154,7 @@ namespace MyWPF
 
 		private void GetClientInfo(object parameter)
         {
-			FormClientInfo fClientInfo = new FormClientInfo(SelectedClientVM);
+			FormClientInfo fClientInfo = new FormClientInfo(VSelectedClient);
 			fClientInfo.Show();
         }
 		#endregion
@@ -166,12 +166,12 @@ namespace MyWPF
 
 		private void GiveBook(object parameter)
 		{
-			if (SelectedBookVM.Status)
+			if (VSelectedBook.VStatus)
 			{
-				SelectedBookVM.Book.People.Add((SelectedClientVM.Client, true));
-				SelectedClientVM.Client.Books.Add((SelectedBookVM.Book, true));
-				SelectedBookVM.Count--;
-				SelectedBookVM.Declare();
+				VSelectedBook.Book.People.Add((VSelectedClient.Client, true));
+				VSelectedClient.Client.Books.Add((VSelectedBook.Book, true));
+				VSelectedBook.VCount--;
+				VSelectedBook.Declare();
 			}
 		}
 
@@ -180,30 +180,32 @@ namespace MyWPF
 		public ICommand GetBookCommand => _getBookCommand ?? (_getBookCommand = new RelayCommand(GetBook));
 		private void GetBook(object parameter)
 		{
-			int index1 = SelectedBookVM.Book.People.IndexOf((SelectedClientVM.Client, true));
-			int index2 = SelectedClientVM.Client.Books.IndexOf((SelectedBookVM.Book, true));
+			int index1 = VSelectedBook.Book.People.IndexOf((VSelectedClient.Client, true));
+			int index2 = VSelectedClient.Client.Books.IndexOf((VSelectedBook.Book, true));
 			if (index1 != -1 && index2 != -1)
 			{
-				SelectedBookVM.Book.People[index1] = (SelectedClientVM.Client, false);
-				SelectedClientVM.Client.Books[index2] = (SelectedBookVM.Book, false);
-				SelectedBookVM.Count++;
-				SelectedBookVM.Declare();
+				VSelectedBook.Book.People[index1] = (VSelectedClient.Client, false);
+				VSelectedClient.Client.Books[index2] = (VSelectedBook.Book, false);
+				VSelectedBook.VCount++;
+				VSelectedBook.Declare();
 			}
 		}
 		#endregion
 		#endregion
 
 		#region Секция конструкторов
-		public MainWindowViewModel(List<Book> books, List<Client> clients)
+		public VMF_Main(List<Book> books, List<Client> clients)
 		{
-			BooksList = new ObservableCollection<BookViewModel>(books.Select(b => new BookViewModel(b)));
-			ClientsList = new ObservableCollection<ClientViewModel>(clients.Select(c => new ClientViewModel(c, false)));
+			VBooksList = new ObservableCollection<VM_Book>(books.Select(b => new VM_Book(b)));
+			VClientsList = new ObservableCollection<VM_Client>(clients.Select(c => new VM_Client(c, false)));
+			VSearchTitleAuthor = "";
+			VSearchFullNameID = "";
 		}
 
-		public MainWindowViewModel()
+		public VMF_Main()
         {
-			BooksList = new ObservableCollection<BookViewModel>();
-			ClientsList = new ObservableCollection<ClientViewModel>();
+			VBooksList = new ObservableCollection<VM_Book>();
+			VClientsList = new ObservableCollection<VM_Client>();
 		}
 
         #endregion

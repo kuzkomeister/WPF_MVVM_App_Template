@@ -12,7 +12,7 @@ using MyWPF.Models;
 
 namespace MyWPF.ViewModels 
 {
-	public class BookViewModel : INotifyPropertyChanged
+	public class VM_Book : INotifyPropertyChanged
 	{
         public Book Book { set; get; }
 
@@ -21,82 +21,82 @@ namespace MyWPF.ViewModels
 
         #region Секция свойств
         #region Информация о книге
-        public string Title
+        public string VTitle
 		{
 			get => Book.Title;
 			set
 			{
 				Book.Title = value;
-				OnPropertyChanged("Title");
+				OnPropertyChanged("VTitle");
 			}
 		}
 
-		public string Author
+		public string VAuthor
 		{
 			get => Book.Author;
 			set
 			{
 				Book.Author = value;
-				OnPropertyChanged("Author");
+				OnPropertyChanged("VAuthor");
 			}
 		}
 
-		public string PublisherName
+		public string VPublisherName
 		{
 			get => Book.Publish.Name;
 			set
 			{
 				Book.Publish.Name = value;
-				OnPropertyChanged("PublisherName");
+				OnPropertyChanged("VPublisherName");
 			}
 		}
 
-		public string PublisherAddress
+		public string VPublisherAddress
 		{
 			get => Book.Publish.Address;
 			set
 			{
 				Book.Publish.Address = value;
-				OnPropertyChanged("PublisherAddress");
+				OnPropertyChanged("VPublisherAddress");
 			}
 		}
 
-		public bool Status
+		public bool VStatus
         {
 			get => Book.Status;
         }
 
-		public int Count
+		public int VCount
         {
 			get => Book.Count;
             set
             {
 				Book.Count = value;
-				OnPropertyChanged("Count");
+				OnPropertyChanged("VCount");
             }
         }
         #endregion
         #region Для вывода в дерево
         
 		private bool _isSelected = false;
-		public bool IsSelected
+		public bool VIsSelected
         {
 			get => _isSelected;
             set
             {
 				_isSelected = value;
-				OnPropertyChanged("IsSelected");
+				OnPropertyChanged("VIsSelected");
             }
         }
 
 		private bool _isExpanded = false;
-		public bool IsExpanded
+		public bool VIsExpanded
 		{
 			get => _isExpanded;
 			set
 			{
 				_isExpanded = value;
-				OnPropertyChanged("IsExpanded");
+				OnPropertyChanged("VIsExpanded");
 			}
 		}
 		#endregion
@@ -104,27 +104,27 @@ namespace MyWPF.ViewModels
 
 
 		#region Секция конструктора
-		public BookViewModel(Book book, bool isSelected=false, bool isExpanded=false)
+		public VM_Book(Book book, bool isSelected=false, bool isExpanded=false)
 		{
 			this.Book = book;
-			IsSelected = isSelected;
-			IsExpanded = isExpanded;
+			VIsSelected = isSelected;
+			VIsExpanded = isExpanded;
 		}
 		#endregion
 
 		// Возвращает список владельцев если они есть
-		public ObservableCollection<ClientViewModel> People
+		public ObservableCollection<VM_Client> VPeople
         {
 			get 
 			{
 				if (Book.People.Count > 0) 
 				{
-					var res = new ObservableCollection<ClientViewModel>(Book.People.Select(c => new ClientViewModel(c.Client, c.Status)));
+					var res = new ObservableCollection<VM_Client>(Book.People.Select(c => new VM_Client(c.Client, c.Status)));
 					return res;
 				}
 				else
 				{
-					return new ObservableCollection<ClientViewModel>() { new ClientViewModel(new Client("Предыдущих владельцев нет", "",""), false) };
+					return new ObservableCollection<VM_Client>() { new VM_Client(new Client("Предыдущих владельцев нет", "",""), false) };
 				}
 			}
             
@@ -137,24 +137,24 @@ namespace MyWPF.ViewModels
 		private void OnPropertyChanged(string propertyName)
 			=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        public BookViewModel Clone()
+        public VM_Book Clone()
         {
-			return new BookViewModel(new Book(Book.Title, Book.Author, new Publisher(Book.Publish.Name, Book.Publish.Address), Book.Count), false);
+			return new VM_Book(new Book(Book.Title, Book.Author, new Publisher(Book.Publish.Name, Book.Publish.Address), Book.Count), false);
         }
 
-		public void ChangeData(BookViewModel newBook)
+		public void ChangeData(VM_Book newBook)
         {
-			Title = newBook.Title;
-			Author = newBook.Author;
-			PublisherName = newBook.PublisherName;
-			PublisherAddress = newBook.PublisherAddress;
-			Count = newBook.Count;
+			VTitle = newBook.VTitle;
+			VAuthor = newBook.VAuthor;
+			VPublisherName = newBook.VPublisherName;
+			VPublisherAddress = newBook.VPublisherAddress;
+			VCount = newBook.VCount;
         }
 
 		public void Declare()
         {
-			OnPropertyChanged("People");
-			OnPropertyChanged("Status");
+			OnPropertyChanged("VPeople");
+			OnPropertyChanged("VStatus");
         }
     }
 }

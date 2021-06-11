@@ -8,12 +8,12 @@ using MyWPF.Commands;
 
 namespace MyWPF.ViewModels
 {
-    class fBookViewModel
+    class VMF_Book
     {
 
 		          
-		public BookViewModel CloneBookVM { set; get; }	// Копия для внесения изменений
-		public BookViewModel OrigBookVM { set; get; }   // Оригинал для итогового внесения изменений
+		public VM_Book VCloneBook { set; get; }	// Копия для внесения изменений
+		public VM_Book OrigBook { set; get; }   // Оригинал для итогового внесения изменений
 
 		public Action CloseAction { set; get; }			// Закрыть окно
 
@@ -24,14 +24,14 @@ namespace MyWPF.ViewModels
 
 		private void SaveChanges(object parameter)
 		{
-			OrigBookVM.ChangeData(CloneBookVM);
+			OrigBook.ChangeData(VCloneBook);
 			CloseAction();
 		}
 
-		public fBookViewModel(BookViewModel book)
+		public VMF_Book(VM_Book book)
         {
-			OrigBookVM = book;
-			CloneBookVM = book.Clone();
+			OrigBook = book;
+			VCloneBook = book.Clone();
         }
 
 

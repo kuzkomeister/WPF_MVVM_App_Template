@@ -11,14 +11,14 @@
     </Style>
 
     <!-- Шаблон для отображения дерева книг и их владельцев -->
-    <HierarchicalDataTemplate x:Key="TreeItemBook" ItemsSource="{Binding Path=People}" >
+    <HierarchicalDataTemplate x:Key="TreeItemBook" ItemsSource="{Binding Path=VPeople}" >
         <StackPanel Style="{StaticResource TreeItemStackPanel}">
             <Image Source="/BookIcon.png" Margin="-2,0,0,0"/>
-            <TextBlock Name="BookTitle" Text="{Binding Path=Title}" Foreground="Red" FontWeight="Bold"/>
+            <TextBlock Name="BookTitle" Text="{Binding Path=VTitle}" Foreground="Red" FontWeight="Bold"/>
         </StackPanel>
 
         <HierarchicalDataTemplate.Triggers>
-            <DataTrigger Binding="{Binding Path=Status}" Value="true">
+            <DataTrigger Binding="{Binding Path=VStatus}" Value="true">
                 <Setter TargetName="BookTitle" Property="Foreground" Value="Green"/>
             </DataTrigger>
         </HierarchicalDataTemplate.Triggers>
@@ -28,17 +28,17 @@
 
                 <StackPanel Style="{StaticResource TreeItemStackPanel}">
                     <Image Name="UserImage" Source="/UserIcon.png" Margin="-2,0,0,0"/>
-                    <TextBlock Name="UserFam" Text="{Binding Path=Fam}" Foreground="Green"/>
+                    <TextBlock Name="UserFam" Text="{Binding Path=VLastName}" Foreground="Green"/>
                     <TextBlock Text=" "/>
-                    <TextBlock Name="UserName" Text="{Binding Path=Name}" Foreground="Green"/>
+                    <TextBlock Name="UserName" Text="{Binding Path=VFirstName}" Foreground="Green"/>
                     <TextBlock Text=" "/>
-                    <TextBlock Name="UserOtch" Text="{Binding Path=Otch}" Foreground="Green"/>
+                    <TextBlock Name="UserOtch" Text="{Binding Path=VPatronymic}" Foreground="Green"/>
                     <TextBlock Name="UserDefis" Text=" - " Foreground="Green"/>
-                    <TextBlock Name="UserID" Text="{Binding Path=ID}" Foreground="Green"/>
+                    <TextBlock Name="UserID" Text="{Binding Path=VID}" Foreground="Green"/>
                 </StackPanel>
 
                 <DataTemplate.Triggers>
-                    <DataTrigger Binding="{Binding Path=Name}" Value="Предыдущих владельцев нет">
+                    <DataTrigger Binding="{Binding Path=VFirstName}" Value="Предыдущих владельцев нет">
                         <Setter TargetName="UserImage" Property="Visibility" Value="Hidden"/>
                         <Setter TargetName="UserDefis" Property="Visibility" Value="Hidden"/>
                         <Setter TargetName="UserFam" Property="Visibility" Value="Hidden"/>
@@ -46,7 +46,7 @@
                         <Setter TargetName="UserName" Property="Margin" Value="-20,0,0,0"/>
                     </DataTrigger>
 
-                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                    <DataTrigger Binding="{Binding VIsSelected}" Value="True">
                         <Setter TargetName="UserName" Property="Foreground" Value="Red"/>
                         <Setter TargetName="UserFam" Property="Foreground" Value="Red"/>
                         <Setter TargetName="UserOtch" Property="Foreground" Value="Red"/>
@@ -66,19 +66,19 @@
             <StackPanel Margin="10" Orientation="Horizontal">
                 <Image Source="/BookIcon.Png" Height="50" Margin="10"/>
                 <StackPanel>
-                    <TextBlock Name="txtTitle" Text="{Binding Title}" FontWeight="Bold"/>
-                    <TextBlock Text="{Binding Author}"/>
+                    <TextBlock Name="txtTitle" Text="{Binding VTitle}" FontWeight="Bold"/>
+                    <TextBlock Text="{Binding VAuthor}"/>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Издательство:"/>
-                        <TextBlock Text="{Binding PublisherName}" Margin="10,0"/>
+                        <TextBlock Text="{Binding VPublisherName}" Margin="10,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Адрес:"/>
-                        <TextBlock Text="{Binding PublisherAddress}" Margin="10,0"/>
+                        <TextBlock Text="{Binding VPublisherAddress}" Margin="10,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Количество:"/>
-                        <TextBlock Text="{Binding Count}" Margin="10,0"/>
+                        <TextBlock Text="{Binding VCount}" Margin="10,0"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
@@ -92,24 +92,24 @@
                 <Image Source="/BookIcon.Png" Height="50" Margin="10"/>
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding VTitle}" FontWeight="Bold"/>
                         <TextBlock Name="StatusBook" Text="" FontWeight="Bold" Foreground="Red"/>
                     </StackPanel>
-                    <TextBlock Text="{Binding Author}"/>
+                    <TextBlock Text="{Binding VAuthor}"/>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Издательство:"/>
-                        <TextBlock Text="{Binding PublisherName}" Margin="10,0"/>
+                        <TextBlock Text="{Binding VPublisherName}" Margin="10,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Адрес:"/>
-                        <TextBlock Text="{Binding PublisherAddress}" Margin="10,0"/>
+                        <TextBlock Text="{Binding VPublisherAddress}" Margin="10,0"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
         </Border>
 
         <DataTemplate.Triggers>
-            <DataTrigger Binding="{Binding IsSelected}" Value="True">
+            <DataTrigger Binding="{Binding VIsSelected}" Value="True">
                 <Setter TargetName="StatusBook" Property="Text" Value=" - На руках"/>
             </DataTrigger>
         </DataTemplate.Triggers>

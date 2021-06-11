@@ -18,9 +18,9 @@ namespace MyWPF.Views
     /// </summary>
     public partial class FormClient : Window
     {
-        public FormClient(ClientViewModel client)
+        public FormClient(VM_Client client)
         {
-            fClientViewModel VM = new fClientViewModel(client);
+            VMF_Client VM = new VMF_Client(client);
             DataContext = VM;
             if (VM.CloseAction == null)
                 VM.CloseAction = new Action(this.Close);

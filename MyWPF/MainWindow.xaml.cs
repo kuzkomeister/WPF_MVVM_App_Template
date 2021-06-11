@@ -72,7 +72,7 @@ namespace MyWPF
 
 			clients[2].Books.Add((books[1], true));
 
-			MainWindowViewModel mVM = new MainWindowViewModel(books, clients);
+			VMF_Main mVM = new VMF_Main(books, clients);
 			DataContext = mVM;
 
 			InitializeComponent();
@@ -80,17 +80,17 @@ namespace MyWPF
 
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-			MainWindowViewModel VM = this.DataContext as MainWindowViewModel;
-			if (VM is MainWindowViewModel && VM.SelectedBookVM != null)
-				ListViewBooks.ScrollIntoView(VM.SelectedBookVM);
+			VMF_Main VM = this.DataContext as VMF_Main;
+			if (VM is VMF_Main && VM.VSelectedBook != null)
+				ListViewBooks.ScrollIntoView(VM.VSelectedBook);
 
         }
 
         private void ListViewClients_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-			MainWindowViewModel VM = this.DataContext as MainWindowViewModel;
-			if (VM is MainWindowViewModel && VM.SelectedClientVM != null)
-				ListViewClients.ScrollIntoView(VM.SelectedClientVM);
+			VMF_Main VM = this.DataContext as VMF_Main;
+			if (VM is VMF_Main && VM.VSelectedClient != null)
+				ListViewClients.ScrollIntoView(VM.VSelectedClient);
 		}
     }
 }
