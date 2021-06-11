@@ -33,13 +33,13 @@ namespace MyWPF
 			 */
 			List<Book> books = new List<Book>()
 			{
-			new Book("Рецепты печенек", null, new Publisher("Мир", "г. Москва"), 2),
+			new Book("Рецепты печенек", "", new Publisher("Мир", "г. Москва"), 2),
 			new Book("CLR via C#", "Джеффри Рихтер", new Publisher("", "г. Москва"), 0),
 			new Book("Война и мир", "Л. Н. Толстой", new Publisher("Читай город", "г. Краснодар"), 5),
 			new Book("Война и война", "Н. Л. Худой", 3),
-			new Book("Рецепты тортиков", null, new Publisher("Мир", "г. Москва"), 4),
-			new Book("Рецепты пирогов", null, new Publisher("Мир", "г. Москва"), 2),
-			new Book("Рецепты кексиков", null, new Publisher("Мир", "г. Москва"), 7)
+			new Book("Рецепты тортиков", "", new Publisher("Мир", "г. Москва"), 4),
+			new Book("Рецепты пирогов", "", new Publisher("Мир", "г. Москва"), 2),
+			new Book("Рецепты кексиков", "", new Publisher("Мир", "г. Москва"), 7)
 			};
 
 			List<Client> clients = new List<Client>()

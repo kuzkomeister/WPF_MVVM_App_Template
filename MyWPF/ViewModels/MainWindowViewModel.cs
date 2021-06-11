@@ -71,7 +71,7 @@ namespace MyWPF
             {
 				_searchTitle = value;
 				OnPropertyChanged("SearchTitle");
-				SelectedBookVM = BooksList.FirstOrDefault(book => book.Title.ToLower().StartsWith(SearchTitle.ToLower()));
+				SelectedBookVM = BooksList.FirstOrDefault(book => (book.Title.ToLower() + " " + book.Author.ToLower()).Contains(SearchTitle.ToLower()));
 			}
 			
         }
@@ -85,7 +85,7 @@ namespace MyWPF
             {
 				_searchFamName = value;
 				OnPropertyChanged("SearchFamName");
-				SelectedClientVM = ClientsList.FirstOrDefault(client => (client.Fam + " " + client.Name + " " + client.Otch).ToLower().StartsWith(SearchFamName.ToLower()));
+				SelectedClientVM = ClientsList.FirstOrDefault(client => (client.Fam + " " + client.Name + " " + client.Otch + " " + client.ID).ToLower().Contains(SearchFamName.ToLower()));
 			}
         }
 
