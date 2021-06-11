@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -27,7 +28,7 @@ namespace MyWPF.ViewModels
 			set
 			{
 				Book.Title = value;
-				OnPropertyChanged("VTitle");
+				OnPropertyChanged();
 			}
 		}
 
@@ -37,7 +38,7 @@ namespace MyWPF.ViewModels
 			set
 			{
 				Book.Author = value;
-				OnPropertyChanged("VAuthor");
+				OnPropertyChanged();
 			}
 		}
 
@@ -47,7 +48,7 @@ namespace MyWPF.ViewModels
 			set
 			{
 				Book.Publish.Name = value;
-				OnPropertyChanged("VPublisherName");
+				OnPropertyChanged();
 			}
 		}
 
@@ -57,7 +58,7 @@ namespace MyWPF.ViewModels
 			set
 			{
 				Book.Publish.Address = value;
-				OnPropertyChanged("VPublisherAddress");
+				OnPropertyChanged();
 			}
 		}
 
@@ -72,7 +73,7 @@ namespace MyWPF.ViewModels
             set
             {
 				Book.Count = value;
-				OnPropertyChanged("VCount");
+				OnPropertyChanged();
             }
         }
         #endregion
@@ -85,7 +86,7 @@ namespace MyWPF.ViewModels
             set
             {
 				_isSelected = value;
-				OnPropertyChanged("VIsSelected");
+				OnPropertyChanged();
             }
         }
 
@@ -96,7 +97,7 @@ namespace MyWPF.ViewModels
 			set
 			{
 				_isExpanded = value;
-				OnPropertyChanged("VIsExpanded");
+				OnPropertyChanged();
 			}
 		}
 		#endregion
@@ -124,7 +125,7 @@ namespace MyWPF.ViewModels
 				}
 				else
 				{
-					return new ObservableCollection<VM_Client>() { new VM_Client(new Client("Предыдущих владельцев нет", "",""), false) };
+					return new ObservableCollection<VM_Client>() { new VM_Client(new Client("Предыдущих владельцев нет", "","",0), false) };
 				}
 			}
             
@@ -133,9 +134,6 @@ namespace MyWPF.ViewModels
 
 
 
-		public event PropertyChangedEventHandler PropertyChanged;
-		private void OnPropertyChanged(string propertyName)
-			=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         public VM_Book Clone()
         {
@@ -153,8 +151,18 @@ namespace MyWPF.ViewModels
 
 		public void Declare()
         {
-			OnPropertyChanged("VPeople");
-			OnPropertyChanged("VStatus");
+			OnPropertyChanged(nameof(VPeople));
+			OnPropertyChanged(nameof(VStatus));
         }
-    }
+
+		/// <summary>
+		/// Объявление свойства из INotifyPropertyChanged
+		/// </summary>
+		public event PropertyChangedEventHandler PropertyChanged;
+		public void OnPropertyChanged([CallerMemberName] string propertyName = "")
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+	}
 }

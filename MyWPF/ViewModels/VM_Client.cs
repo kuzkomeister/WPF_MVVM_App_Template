@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using MyWPF.Models;
 
@@ -26,31 +27,37 @@ namespace MyWPF.ViewModels
         {
             get => Client.ID;
         }
-        public string VFirstName                   
+
+        // Имя
+        public string VFirstName                             
         {
             get => Client.FirstName;
             set
             {
                 Client.FirstName = value;
-                OnPropertyChanged("VFirstName");
+                OnPropertyChanged();
             }
         }
-        public string VLastName                      // Фамилия
+
+        // Фамилия
+        public string VLastName                      
         {
             get => Client.LastName;
             set
             {
                 Client.LastName = value;
-                OnPropertyChanged("VLastName");
+                OnPropertyChanged();
             }
         }
-        public string VPatronymic                     // Отчество
+
+        // Отчество
+        public string VPatronymic                     
         {
             get => Client.Patronymic;
             set
             {
                 Client.Patronymic = value;
-                OnPropertyChanged("VPatronymic");
+                OnPropertyChanged();
             }
         }
         // 
@@ -61,7 +68,7 @@ namespace MyWPF.ViewModels
             set
             {
                 _isSelected = value;
-                OnPropertyChanged("VIsSelected");
+                OnPropertyChanged();
             }
         }
 
@@ -72,7 +79,7 @@ namespace MyWPF.ViewModels
             set
             {
                 _isExpanded = value;
-                OnPropertyChanged("VIsExpanded");
+                OnPropertyChanged();
             }
         }
 
@@ -92,11 +99,18 @@ namespace MyWPF.ViewModels
         {
             this.VFirstName = newClient.VFirstName;
             this.VLastName = newClient.VLastName;
+            this.VPatronymic = newClient.VPatronymic;
         }
 
 
+        /// <summary>
+        /// Объявление свойства из INotifyPropertyChanged
+        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }

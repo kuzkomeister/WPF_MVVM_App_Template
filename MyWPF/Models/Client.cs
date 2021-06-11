@@ -28,17 +28,14 @@ namespace MyWPF.Models
             Books = new ObservableCollection<(Book, bool)>();
         }
 
-        public Client(string firstName, string lastName, string patronymic, List<(Book, bool)> books) : this(firstName, lastName, patronymic)
+        public Client(string firstName, string lastName, string patronymic, int id) : this(firstName, lastName, patronymic) 
         {
-            Books = new ObservableCollection<(Book, bool)>(books);
-        }
-
-        public Client(string firstName, string lastName, string patronymic, int id, List<(Book, bool)> books) : this(firstName, lastName, patronymic, books)
-        {
+            FirstName = firstName;
+            LastName = lastName;
+            Patronymic = patronymic;
             ID = id;
+            Books = new ObservableCollection<(Book, bool)>();
         }
-
-        public Client(string firstName, string lastName, string patronymic, int id) : this(firstName, lastName, patronymic, id, new List<(Book, bool)>()) { }
         #endregion
     }
 }

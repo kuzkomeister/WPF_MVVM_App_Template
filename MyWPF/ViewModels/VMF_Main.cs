@@ -12,6 +12,7 @@ using MyWPF.ViewModels;
 using System.Windows.Controls;
 using MyWPF.Models;
 using MyWPF.Views;
+using System.Runtime.CompilerServices;
 
 namespace MyWPF
 {
@@ -46,7 +47,7 @@ namespace MyWPF
 						_selectedBook = value;
 						_selectedBook.VIsExpanded = true;
 					}
-					OnPropertyChanged("VSelectedBook");
+					OnPropertyChanged();
 				}
 			}
 		}
@@ -58,7 +59,7 @@ namespace MyWPF
             set
             {
 				_selectedClient = value;
-				OnPropertyChanged("VSelectedClient");
+				OnPropertyChanged();
             }
         }
 
@@ -70,7 +71,7 @@ namespace MyWPF
             set
             {
 				_searchTitleAuthor = value;
-				OnPropertyChanged("VSearchTitleAuthor");
+				OnPropertyChanged();
 				VSelectedBook = VBooksList.FirstOrDefault(book => (book.VTitle.ToLower() + " " + book.VAuthor.ToLower()).Contains(VSearchTitleAuthor.ToLower()));
 			}
 			
@@ -84,7 +85,7 @@ namespace MyWPF
             set
             {
 				_searchFullNameID = value;
-				OnPropertyChanged("VSearchFullNameID");
+				OnPropertyChanged();
 				VSelectedClient = VClientsList.FirstOrDefault(client => (client.VLastName + " " + client.VFirstName + " " + client.VPatronymic + " " + client.VID).ToLower().Contains(VSearchFullNameID.ToLower()));
 			}
         }
@@ -130,7 +131,6 @@ namespace MyWPF
 			VM_Client newClient = new VM_Client(new Client("", "", ""), false);
 			FormClient fClient = new FormClient(newClient);
 			fClient.ShowDialog();
-
 			if (newClient.VFirstName.Trim() != "" && newClient.VLastName.Trim() != "" && newClient.VPatronymic.Trim() != "")
 			{
 				VClientsList.Add(newClient);
@@ -206,13 +206,15 @@ namespace MyWPF
         {
 			VBooksList = new ObservableCollection<VM_Book>();
 			VClientsList = new ObservableCollection<VM_Client>();
+			VSearchTitleAuthor = "";
+			VSearchFullNameID = "";
 		}
 
-        #endregion
+		#endregion
 
 
 
-        /*
+		/*
 		 * 
 		 *  
 		 protected void Set<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
@@ -225,8 +227,15 @@ namespace MyWPF
 		 */
 
 
-        public event PropertyChangedEventHandler PropertyChanged;
-		private void OnPropertyChanged(string propertyName)
-			=> PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		/// <summary>
+		/// Объявление свойства из INotifyPropertyChanged
+		/// </summary>
+		public event PropertyChangedEventHandler PropertyChanged;
+		public void OnPropertyChanged([CallerMemberName] string propertyName = "")
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+		}
+
+
 	}
 }
