@@ -5,7 +5,10 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:local="clr-namespace:MyWPF.Converters"
 		mc:Ignorable="d"
-		Title="Учет выдачи книг" Height="800" Width="1125" Icon="/BookIcon.png">
+		Title="Учет выдачи книг" 
+        MinHeight="500" MinWidth="1025"
+        Height="800" Width="1000" 
+        Icon="/BookIcon.png">
 
     <Window.Resources>
         <local:OffsetConverter x:Key="ListViewOffsetConverter"/>
@@ -30,7 +33,7 @@
                         <TextBox Width="175" Text="{Binding VSearchTitleAuthor, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Text="Поиск"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                         <Button  Width="125" Height="50" 
                                 Command="{Binding CmdCreateNewBook}" Margin="5">
                             <TextBlock Text="Добавить новую книгу" TextWrapping="Wrap" TextAlignment="Center"/>
@@ -39,7 +42,7 @@
                                 Command="{Binding CmdEditBook}" Margin="5">
                             <TextBlock Text="Изменить данные текущей книги" TextWrapping="Wrap" TextAlignment="Center"/>
                         </Button>
-                    </StackPanel>
+                    </WrapPanel>
                 </StackPanel>
             </Border>
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
@@ -52,7 +55,7 @@
             </Border>
         </StackPanel>
 
-        <!-- Секция отдачи/возврата книг -->
+        <!-- Секция кнопок отдачи/возврата книг -->
         <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Button Name="bGiveBook" Content="Выдать →" Margin="5" Width="100" 
                                             Command="{Binding Path=CmdGiveBook}"/>
@@ -69,7 +72,7 @@
                         <TextBox Width="175" Text="{Binding Path=VSearchFullNameID, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Text="Поиск"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                    <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
                         <Button  Width="125" Height="50" 
                                 Command="{Binding CmdCreateNewClient}" Margin="5">
                             <TextBlock Text="Добавить нового клиента" TextWrapping="Wrap" TextAlignment="Center"/>
@@ -78,7 +81,7 @@
                                 Command="{Binding CmdEditClient}" Margin="5">
                             <TextBlock Text="Изменить данные текущего клиента" TextWrapping="Wrap" TextAlignment="Center"/>
                         </Button>
-                    </StackPanel>
+                    </WrapPanel>
                 </StackPanel>
             </Border>
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
@@ -128,9 +131,7 @@
             </Border>
         </StackPanel>
 
-
-
-
+        <!-- Секция дерева книг со списком их предыдущих владельцев -->
         <TreeView Grid.Column="3" Margin="0,5,0,0" Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight, Converter={StaticResource ListViewOffsetConverter}, ConverterParameter=-48}" VerticalAlignment="Top">
             <TreeViewItem Header="Список книг и их предыдущих владельцев" ItemsSource="{Binding VFilteredBooksList}" ItemTemplate="{StaticResource TreeItemBook}" IsExpanded="True">
                 <TreeViewItem.ItemContainerStyle>
