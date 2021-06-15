@@ -45,7 +45,7 @@
             <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
                 <ScrollViewer Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight, Converter={StaticResource ListViewOffsetConverter}, ConverterParameter=-160}">
                     <StackPanel>
-                        <ListView x:Name="ListViewBooks" ItemsSource="{Binding VBooksList}" ItemTemplate="{StaticResource ListViewItemBook}" IsSynchronizedWithCurrentItem="True" Margin="0,10,0,0" 
+                        <ListView x:Name="ListViewBooks" ItemsSource="{Binding VFilteredBooksList}" ItemTemplate="{StaticResource ListViewItemBook}" IsSynchronizedWithCurrentItem="True" Margin="0,10,0,0" 
                           SelectedItem="{Binding VSelectedBook, Mode=TwoWay}" SelectionChanged="ListView_SelectionChanged"/>
                     </StackPanel>
                 </ScrollViewer>
@@ -85,7 +85,7 @@
                 <ScrollViewer Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight, Converter={StaticResource ListViewOffsetConverter}, ConverterParameter=-160}">
                     <StackPanel>
                         <ListView IsSynchronizedWithCurrentItem="True" x:Name="ListViewClients"
-                            ItemsSource="{Binding Path=VClientsList}" 
+                            ItemsSource="{Binding Path=VFilteredClientsList}" 
                             SelectedItem="{Binding Path=VSelectedClient, Mode=TwoWay}" SelectionChanged="ListViewClients_SelectionChanged">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
@@ -132,7 +132,7 @@
 
 
         <TreeView Grid.Column="3" Margin="0,5,0,0" Height="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}, Path=ActualHeight, Converter={StaticResource ListViewOffsetConverter}, ConverterParameter=-48}" VerticalAlignment="Top">
-            <TreeViewItem Header="Список книг и их предыдущих владельцев" ItemsSource="{Binding VBooksList}" ItemTemplate="{StaticResource TreeItemBook}" IsExpanded="True">
+            <TreeViewItem Header="Список книг и их предыдущих владельцев" ItemsSource="{Binding VFilteredBooksList}" ItemTemplate="{StaticResource TreeItemBook}" IsExpanded="True">
                 <TreeViewItem.ItemContainerStyle>
                     <Style TargetType="{x:Type TreeViewItem}">
                         <Setter Property="IsExpanded" Value="{Binding VIsExpanded, Mode=TwoWay}"/>

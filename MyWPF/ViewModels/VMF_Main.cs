@@ -15,8 +15,38 @@ namespace MyWPF
 
         #region Секция свойств
         // Список книг
-        public ObservableCollection<VM_Book> VBooksList { set; get; }
-        public ObservableCollection<VM_Client> VClientsList { set; get; }
+        public ObservableCollection<VM_Book> BooksList { set; get; }
+        public ObservableCollection<VM_Book> VFilteredBooksList
+        {
+            get
+            {
+                ObservableCollection<VM_Book> temp = new ObservableCollection<VM_Book>();
+                foreach(VM_Book book in BooksList)
+                {
+                    if ((book.VTitle.ToLower() + " " + book.VAuthor.ToLower()).Contains(VSearchTitleAuthor.ToLower()))
+                    {
+                        temp.Add(book);
+                    }
+                }
+                return temp;
+            }
+        }
+        public ObservableCollection<VM_Client> ClientsList { set; get; }
+        public ObservableCollection<VM_Client> VFilteredClientsList
+        {
+            get
+            {
+                ObservableCollection<VM_Client> temp = new ObservableCollection<VM_Client>();
+                foreach(VM_Client client in ClientsList)
+                {
+                    if ((client.VLastName + " " + client.VFirstName + " " + client.VPatronymic + " " + client.VID).ToLower().Contains(VSearchFullNameID.ToLower()))
+                    {
+                        temp.Add(client);
+                    }
+                }
+                return temp;
+            }
+        } 
 
         // Текущая выбранная книга
         private VM_Book _selectedBook;
@@ -65,7 +95,8 @@ namespace MyWPF
             {
                 _searchTitleAuthor = value;
                 OnPropertyChanged();
-                VSelectedBook = VBooksList.FirstOrDefault(book => (book.VTitle.ToLower() + " " + book.VAuthor.ToLower()).Contains(VSearchTitleAuthor.ToLower()));
+                VSelectedBook = BooksList.FirstOrDefault(book => (book.VTitle.ToLower() + " " + book.VAuthor.ToLower()).Contains(VSearchTitleAuthor.ToLower()));
+                OnPropertyChanged(nameof(VFilteredBooksList));
             }
 
         }
@@ -79,7 +110,8 @@ namespace MyWPF
             {
                 _searchFullNameID = value;
                 OnPropertyChanged();
-                VSelectedClient = VClientsList.FirstOrDefault(client => (client.VLastName + " " + client.VFirstName + " " + client.VPatronymic + " " + client.VID).ToLower().Contains(VSearchFullNameID.ToLower()));
+                VSelectedClient = ClientsList.FirstOrDefault(client => (client.VLastName + " " + client.VFirstName + " " + client.VPatronymic + " " + client.VID).ToLower().Contains(VSearchFullNameID.ToLower()));
+                OnPropertyChanged(nameof(VFilteredClientsList));
             }
         }
 
@@ -98,7 +130,7 @@ namespace MyWPF
 
             if (newBook.VTitle.Trim() != "" && newBook.VCount != 0)
             {
-                VBooksList.Add(newBook);
+                BooksList.Add(newBook);
                 VSelectedBook = newBook;
             }
         }
@@ -123,7 +155,7 @@ namespace MyWPF
             fClient.ShowDialog();
             if (newClient.VFirstName.Trim() != "" && newClient.VLastName.Trim() != "" && newClient.VPatronymic.Trim() != "")
             {
-                VClientsList.Add(newClient);
+                ClientsList.Add(newClient);
                 VSelectedClient = newClient;
             }
         }
@@ -182,16 +214,16 @@ namespace MyWPF
         #region Секция конструкторов
         public VMF_Main(List<Book> books, List<Client> clients)
         {
-            VBooksList = new ObservableCollection<VM_Book>(books.Select(b => new VM_Book(b)));
-            VClientsList = new ObservableCollection<VM_Client>(clients.Select(c => new VM_Client(c, false)));
+            BooksList = new ObservableCollection<VM_Book>(books.Select(b => new VM_Book(b)));
+            ClientsList = new ObservableCollection<VM_Client>(clients.Select(c => new VM_Client(c, false)));
             VSearchTitleAuthor = "";
             VSearchFullNameID = "";
         }
 
         public VMF_Main()
         {
-            VBooksList = new ObservableCollection<VM_Book>();
-            VClientsList = new ObservableCollection<VM_Client>();
+            BooksList = new ObservableCollection<VM_Book>();
+            ClientsList = new ObservableCollection<VM_Client>();
             VSearchTitleAuthor = "";
             VSearchFullNameID = "";
         }
