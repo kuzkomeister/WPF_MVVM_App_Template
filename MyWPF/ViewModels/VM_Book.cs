@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Windows;
-using System.Windows.Input;
-using MyWPF.Commands;
-using MyWPF.Converters;
 using MyWPF.Models;
 
 namespace MyWPF.ViewModels 
 {
-	public class VM_Book : INotifyPropertyChanged
+	public class VM_Book : VM_BASIC
 	{
         public Book Book { set; get; }
 
@@ -155,14 +146,6 @@ namespace MyWPF.ViewModels
 			OnPropertyChanged(nameof(VStatus));
         }
 
-		/// <summary>
-		/// Объявление свойства из INotifyPropertyChanged
-		/// </summary>
-		public event PropertyChangedEventHandler PropertyChanged;
-		public void OnPropertyChanged([CallerMemberName] string propertyName = "")
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
-
+	
 	}
 }

@@ -9,7 +9,7 @@ using MyWPF.Models;
 
 namespace MyWPF.ViewModels
 {
-    public class VM_Client : INotifyPropertyChanged
+    public class VM_Client : VM_BASIC
     {
         
 
@@ -103,14 +103,7 @@ namespace MyWPF.ViewModels
         }
 
 
-        /// <summary>
-        /// Объявление свойства из INotifyPropertyChanged
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        
 
     }
 }

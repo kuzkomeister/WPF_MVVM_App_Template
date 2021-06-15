@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using System.Windows;
 using System.Windows.Input;
 using MyWPF.Commands;
 
@@ -19,10 +15,9 @@ namespace MyWPF.ViewModels
 
 
 		// Сохранить изменения книги
-		private ICommand _saveBookChanges;
-		public ICommand SaveBookChanges => _saveBookChanges ?? (_saveBookChanges = new RelayCommand(SaveChanges));
+		public ICommand CmdSaveBook => new RelayCommand(_DoSaveBook);
 
-		private void SaveChanges(object parameter)
+		private void _DoSaveBook()
 		{
 			OrigBook.ChangeData(VCloneBook);
 			CloseAction();

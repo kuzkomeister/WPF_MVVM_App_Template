@@ -16,7 +16,7 @@ using System.Runtime.CompilerServices;
 
 namespace MyWPF
 {
-	class VMF_Main : INotifyPropertyChanged
+	class VMF_Main : VM_BASIC
 	{
 		
 
@@ -95,10 +95,9 @@ namespace MyWPF
         #region Секция команд и их вызываемых методов
         #region Создание и изменение книги или клиента
         // Создание новой пустой книги
-        private ICommand _createNewBookCommand;
-		public ICommand CreateNewBookCommand => _createNewBookCommand ?? (_createNewBookCommand = new RelayCommand(CreateNewBook));
+		public ICommand CmdCreateNewBook => new RelayCommand(_DoCreateNewBook);
 
-		private void CreateNewBook(object parameter)
+		private void _DoCreateNewBook()
 		{
 			VM_Book newBook = new VM_Book(new Book("", 0), false);
             FormBook fBook = new FormBook(newBook);
@@ -112,10 +111,9 @@ namespace MyWPF
         }
 
 		// Создание формы для изменения данных о книге
-		private ICommand _editBookCommand;
-		public ICommand EditBookCommand => _editBookCommand ?? (_editBookCommand = new RelayCommand(EditBook));
+		public ICommand CmdEditBook => new RelayCommand(_DoEditBook);
 
-		private void EditBook(object parameter)
+		private void _DoEditBook()
         {
 			FormBook fBook = new FormBook(VSelectedBook);
 			fBook.ShowDialog();
@@ -123,10 +121,9 @@ namespace MyWPF
 
 
 		// Создание нового клиента
-		private ICommand _createNewClientCommand;
-		public ICommand CreateNewClientCommand => _createNewClientCommand ?? (_createNewClientCommand = new RelayCommand(CreateNewClient));
+		public ICommand CmdCreateNewClient => new RelayCommand(_DoCreateNewClient);
 
-		private void CreateNewClient(object parameter)
+		private void _DoCreateNewClient()
         {
 			VM_Client newClient = new VM_Client(new Client("", "", ""), false);
 			FormClient fClient = new FormClient(newClient);
@@ -139,20 +136,18 @@ namespace MyWPF
         }
 
 		// Создание формы для изменения данных о клиенте
-		private ICommand _editClientCommand;
-		public ICommand EditClientCommand => _editClientCommand ?? (_editClientCommand = new RelayCommand(EditClient));
+		public ICommand CmdEditClient =>  new RelayCommand(_DoEditClient);
 
-		private void EditClient(object parameter)
+		private void _DoEditClient()
         {
 			FormClient fClient = new FormClient(VSelectedClient);
 			fClient.ShowDialog();
 		}
 
 
-		private ICommand _getClientInfoCommand;
-		public ICommand GetClientInfoCommand => _getClientInfoCommand ?? (_getClientInfoCommand = new RelayCommand(GetClientInfo));
+		public ICommand CmdGetClientInfo => new RelayCommand(_DoGetClientInfo);
 
-		private void GetClientInfo(object parameter)
+		private void _DoGetClientInfo()
         {
 			FormClientInfo fClientInfo = new FormClientInfo(VSelectedClient);
 			fClientInfo.Show();
@@ -161,10 +156,9 @@ namespace MyWPF
 
 		#region Возврат и выдача книг
 		// Комманда выдать книгу клиенту
-		private ICommand _giveBookCommand;
-		public ICommand GiveBookCommand => _giveBookCommand ?? (_giveBookCommand = new RelayCommand(GiveBook));
+		public ICommand CmdGiveBook => new RelayCommand(_DoGiveBook);
 
-		private void GiveBook(object parameter)
+		private void _DoGiveBook()
 		{
 			if (VSelectedBook.VStatus)
 			{
@@ -176,9 +170,8 @@ namespace MyWPF
 		}
 
 		// Команда получить книгу от клиента
-		private ICommand _getBookCommand;
-		public ICommand GetBookCommand => _getBookCommand ?? (_getBookCommand = new RelayCommand(GetBook));
-		private void GetBook(object parameter)
+		public ICommand CmdGetBook => new RelayCommand(_DoGetBook);
+		private void _DoGetBook()
 		{
 			int index1 = VSelectedBook.Book.People.IndexOf((VSelectedClient.Client, true));
 			int index2 = VSelectedClient.Client.Books.IndexOf((VSelectedBook.Book, true));
@@ -227,14 +220,7 @@ namespace MyWPF
 		 */
 
 
-		/// <summary>
-		/// Объявление свойства из INotifyPropertyChanged
-		/// </summary>
-		public event PropertyChangedEventHandler PropertyChanged;
-		public void OnPropertyChanged([CallerMemberName] string propertyName = "")
-		{
-			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
+		
 
 
 	}

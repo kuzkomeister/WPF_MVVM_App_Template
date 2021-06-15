@@ -14,10 +14,9 @@ namespace MyWPF.ViewModels
         public Action CloseAction { set; get; }             // Закрыть окно
 
         // Сохранить изменения книги
-        private ICommand _saveClientChanges;
-        public ICommand SaveClientChanges => _saveClientChanges ?? (_saveClientChanges = new RelayCommand(SaveChanges));
+        public ICommand CmdSaveClient => new RelayCommand(_DoSaveClient);
 
-        private void SaveChanges(object parameter)
+        private void _DoSaveClient()
         {
             OrigClient.ChangeData(VCloneClient);
             CloseAction();

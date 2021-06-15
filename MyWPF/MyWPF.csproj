@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Commands\myRelayCommand.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="BookIcon.png" />
     <None Remove="UserIcon.png" />
   </ItemGroup>

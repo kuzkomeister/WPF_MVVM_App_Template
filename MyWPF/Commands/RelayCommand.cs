@@ -1,38 +1,112 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace MyWPF.Commands
 {
     public class RelayCommand : ICommand
     {
-        private readonly Func<object, bool> _canExecute;
-        private readonly Action<object> _onExecute;
-
-        /// <summary>Событие извещающее об измении состояния команды</summary>
         public event EventHandler CanExecuteChanged
         {
             add { CommandManager.RequerySuggested += value; }
             remove { CommandManager.RequerySuggested -= value; }
         }
 
-        /// <summary>Конструктор команды</summary>
-        /// <param name="execute">Выполняемый метод команды</param>
-        /// <param name="canExecute">Метод разрешающий выполнение команды</param>
-        public RelayCommand(Action<object> execute, Func<object, bool> canExecute = null)
+        private Action _methodToExecute;
+        private Func<bool> _canExecuteEvaluator;
+
+        public RelayCommand(Action methodToExecute, Func<bool> canExecuteEvaluator)
         {
-            _onExecute = execute;
+            _methodToExecute = methodToExecute;
+            _canExecuteEvaluator = canExecuteEvaluator;
+        }
+
+        public RelayCommand(Action methodToExecute) : this(methodToExecute, null)
+        {
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            if (_canExecuteEvaluator == null)
+            {
+                return true;
+            }
+            else
+            {
+                bool result = _canExecuteEvaluator.Invoke();
+                return result;
+            }
+        }
+
+        public void Execute(object parameter)
+        {
+            _methodToExecute.Invoke();
+        }
+    }
+
+
+    public class RelayCommand<T> : ICommand
+    {
+        #region Fields
+
+        private readonly Action<T> _execute = null;
+        private readonly Predicate<T> _canExecute = null;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Creates a new command that can always execute.
+        /// </summary>
+        /// <param name="execute">The execution logic.</param>
+        public RelayCommand(Action<T> execute)
+            : this(execute, null)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new command with conditional execution.
+        /// </summary>
+        /// <param name="execute">The execution logic.</param>
+        /// <param name="canExecute">The execution status logic.</param>
+        public RelayCommand(Action<T> execute, Predicate<T> canExecute)
+        {
+            _execute = execute ?? throw new ArgumentNullException("execute"); 
             _canExecute = canExecute;
         }
 
-        /// <summary>Вызов разрешающего метода команды</summary>
-        /// <param name="parameter">Параметр команды</param>
-        /// <returns>True - если выполнение команды разрешено</returns>
-        public bool CanExecute(object parameter) => _canExecute == null ? true : _canExecute.Invoke(parameter);
+        #endregion
 
-        /// <summary>Вызов выполняющего метода команды</summary>
-        /// <param name="parameter">Параметр команды</param>
-        public void Execute(object parameter) => _onExecute?.Invoke(parameter);
+        #region ICommand Members
+
+        public bool CanExecute(object parameter)
+        {
+            return _canExecute == null ? true : _canExecute((T)parameter);
+        }
+
+        public event EventHandler CanExecuteChanged
+        {
+            add
+            {
+                if (_canExecute != null)
+                    CommandManager.RequerySuggested += value;
+            }
+            remove
+            {
+                if (_canExecute != null)
+                    CommandManager.RequerySuggested -= value;
+            }
+        }
+
+        public void Execute(object parameter)
+        {
+            _execute((T)parameter);
+        }
+
+        #endregion
     }
 }
