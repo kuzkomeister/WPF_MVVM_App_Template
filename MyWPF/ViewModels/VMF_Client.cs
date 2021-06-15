@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows.Input;
 using MyWPF.Commands;
 
 namespace MyWPF.ViewModels
 {
-    class VMF_Client
+    class VMF_Client : VM_BASIC
     {
         public VM_Client VCloneClient { set; get; }  // Копия для внесения изменений
         public VM_Client OrigClient { set; get; }     // Оригинал для итогового внесения изменений
@@ -14,7 +12,7 @@ namespace MyWPF.ViewModels
         public Action CloseAction { set; get; }             // Закрыть окно
 
         // Сохранить изменения книги
-        public ICommand CmdSaveClient => new RelayCommand(_DoSaveClient);
+        public ICommand CmdSaveClient => new RelayCommand(_DoSaveClient, _AlwaysTrue);
 
         private void _DoSaveClient()
         {

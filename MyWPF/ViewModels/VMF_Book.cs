@@ -4,32 +4,32 @@ using MyWPF.Commands;
 
 namespace MyWPF.ViewModels
 {
-    class VMF_Book
+    class VMF_Book : VM_BASIC
     {
 
-		          
-		public VM_Book VCloneBook { set; get; }	// Копия для внесения изменений
-		public VM_Book OrigBook { set; get; }   // Оригинал для итогового внесения изменений
 
-		public Action CloseAction { set; get; }			// Закрыть окно
+        public VM_Book VCloneBook { set; get; } // Копия для внесения изменений
+        public VM_Book OrigBook { set; get; }   // Оригинал для итогового внесения изменений
+
+        public Action CloseAction { set; get; }         // Закрыть окно
 
 
-		// Сохранить изменения книги
-		public ICommand CmdSaveBook => new RelayCommand(_DoSaveBook);
+        // Сохранить изменения книги
+        public ICommand CmdSaveBook => new RelayCommand(_DoSaveBook, _AlwaysTrue);
 
-		private void _DoSaveBook()
-		{
-			OrigBook.ChangeData(VCloneBook);
-			CloseAction();
-		}
-
-		public VMF_Book(VM_Book book)
+        private void _DoSaveBook()
         {
-			OrigBook = book;
-			VCloneBook = book.Clone();
+            OrigBook.ChangeData(VCloneBook);
+            CloseAction();
+        }
+
+        public VMF_Book(VM_Book book)
+        {
+            OrigBook = book;
+            VCloneBook = book.Clone();
         }
 
 
 
-	}
+    }
 }

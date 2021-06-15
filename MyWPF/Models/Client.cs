@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 
 namespace MyWPF.Models
 {
@@ -19,7 +16,7 @@ namespace MyWPF.Models
         #endregion
 
         #region Секция конструкторов
-        public Client(string firstName, string  lastName, string patronymic)
+        public Client(string firstName, string lastName, string patronymic)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -28,7 +25,7 @@ namespace MyWPF.Models
             Books = new ObservableCollection<(Book, bool)>();
         }
 
-        public Client(string firstName, string lastName, string patronymic, int id) : this(firstName, lastName, patronymic) 
+        public Client(string firstName, string lastName, string patronymic, int id) : this(firstName, lastName, patronymic)
         {
             FirstName = firstName;
             LastName = lastName;

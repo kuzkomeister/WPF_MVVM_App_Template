@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Navigation;
 
 namespace MyWPF.ViewModels
 {
@@ -24,6 +22,15 @@ namespace MyWPF.ViewModels
 
         #endregion
 
+        /// <summary>
+        /// Заглушка для свойства Enabled в Command: TRUE
+        /// </summary>
+        protected bool _AlwaysTrue() { return true; }
+
+        /// <summary>
+        /// Заглушка для свойства Enabled в Command: FALSE
+        /// </summary>
+        protected bool _AlwaysFalse() { return false; }
 
         /// <summary>
         /// Объявление свойства из INotifyPropertyChanged
@@ -34,7 +41,7 @@ namespace MyWPF.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        
+
 
     }
 }

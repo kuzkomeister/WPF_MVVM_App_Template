@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using MyWPF.Models;
 
 namespace MyWPF.ViewModels
 {
     public class VM_Client : VM_BASIC
     {
-        
+
 
 
         public VM_Client(Client client, bool isSelected)
         {
-            Client = client;    
+            Client = client;
             VIsSelected = isSelected;     // 
         }
 
@@ -29,7 +24,7 @@ namespace MyWPF.ViewModels
         }
 
         // Имя
-        public string VFirstName                             
+        public string VFirstName
         {
             get => Client.FirstName;
             set
@@ -40,7 +35,7 @@ namespace MyWPF.ViewModels
         }
 
         // Фамилия
-        public string VLastName                      
+        public string VLastName
         {
             get => Client.LastName;
             set
@@ -51,7 +46,7 @@ namespace MyWPF.ViewModels
         }
 
         // Отчество
-        public string VPatronymic                     
+        public string VPatronymic
         {
             get => Client.Patronymic;
             set
@@ -103,7 +98,7 @@ namespace MyWPF.ViewModels
         }
 
 
-        
+
 
     }
 }
